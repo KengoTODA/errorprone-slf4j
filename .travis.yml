@@ -1,0 +1,20 @@
+language: java
+dist: trusty
+sudo: false
+addons:
+  sonarcloud:
+    organization: "kengotoda-github"
+    token:
+      secure: "WqmQamwsARE9sVvMZOnWhTjDb3FcMtPXvbhH6kCxDZn8iExfhj87VlGyGC6d23DvMop/dfpICjd4VyQu+HmLBXzdkFa0CzseS4mShTwwgTzBh0otD/51AICm8qMdjQ+7oe9tZJkxTwUGVzzOm9MG5oPx34vuwvE3Jwa54VI1XmBY5/bgngh6Xg1bEMbVOP/A/dj+fmJUn8AVJPIMYwIeq7wgt2hfC/hFXLJ3Qhnpr5xCz3gl5xmVMc5rhrFh7cN/SeoVrXY2JXtz1Ud1S9YRcMyck1wWwILykaa+o/UpMFK1Mz+Q+Dp8la6WfyNvTIN2xDSGMwVmXYQSVCb5VyliEIvSUKk1hE2YK6VYPOtV60IRX7pva4YUv4DX5kfgXTK9s1gSP4eukWwvpQtMdML3jVnd6/cI85WrrTuynatjRdVTIYCCh+qV4OgoeSNOyCdHYRaQv8FUWGXMozGYXyLZ69oVASWnB6A91gR44whVsDl+om+Ot8b+g0SOfBDqUFCWIF1JLxCo7yUEUo8/kpa+S03qQyyzWnOW2D1AF7rD3fRG7lGJWJhuELSYdKSGrTOCawdHiKHHLjS6gY0dV4s6z+NdpWLgiD/lrDw4/PsOwDy6OBQ2EMbJvsLP5CzThBq2pbVU7IHKWaF2keZPpYabQPP2brQ68rumgQTWoIkojn8="
+jdk:
+  - oraclejdk8
+script:
+  - mvn org.jacoco:jacoco-maven-plugin:prepare-agent verify sonar:sonar -B
+notifications:
+  email:
+    recipients:
+      - skypencil+travis@gmail.com
+cache:
+  directories:
+    - '$HOME/.m2/repository'
+    - '$HOME/.sonar/cache'

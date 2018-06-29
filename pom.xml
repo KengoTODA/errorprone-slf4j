@@ -37,6 +37,12 @@
     <system>GitHub Issues</system>
     <url>https://github.com/KengoTODA/errorprone-slf4j/issues</url>
   </issueManagement>
+  <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+  </distributionManagement>
   <inceptionYear>2018</inceptionYear>
   <build>
     <plugins>

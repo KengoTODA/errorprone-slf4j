@@ -18,3 +18,9 @@ cache:
   directories:
     - '$HOME/.m2/repository'
     - '$HOME/.sonar/cache'
+deploy:
+  # deploy SNAPSHOT to sonatype repository
+  - provider: script
+    script: mvn deploy -P release -Dgpg.skip -DskipTests -B
+    on:
+      branch: master

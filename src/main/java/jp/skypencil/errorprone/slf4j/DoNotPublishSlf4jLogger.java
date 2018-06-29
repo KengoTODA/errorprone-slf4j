@@ -13,6 +13,7 @@ import com.google.errorprone.bugpatterns.BugChecker;
 import com.google.errorprone.bugpatterns.BugChecker.VariableTreeMatcher;
 import com.google.errorprone.fixes.Fix;
 import com.google.errorprone.fixes.SuggestedFix;
+import com.google.errorprone.fixes.SuggestedFix.Builder;
 import com.google.errorprone.matchers.Description;
 import com.google.errorprone.matchers.Matcher;
 import com.google.errorprone.util.ASTHelpers;
@@ -69,7 +70,7 @@ public class DoNotPublishSlf4jLogger extends BugChecker implements VariableTreeM
   @Override
   public Description matchVariable(VariableTree tree, VisitorState state) {
     if (allOf(isField(), SLF4J_LOGGER, not(PRIVATE)).matches(tree, state)) {
-      Fix fix = createSuggestedFix(tree.getModifiers());
+      Fix fix = createSuggestedFix(tree);
       return Description.builder(
               tree,
               "DoNotPublishSlf4jLogger",
@@ -101,16 +102,21 @@ public class DoNotPublishSlf4jLogger extends BugChecker implements VariableTreeM
     }
   }
 
-  private Fix createSuggestedFix(ModifiersTree modifiers) {
+  private Fix createSuggestedFix(VariableTree tree) {
     StringBuilder replacement = new StringBuilder();
-    List<? extends AnnotationTree> annotations = modifiers.getAnnotations();
+    List<? extends AnnotationTree> annotations = tree.getModifiers().getAnnotations();
     for (AnnotationTree annotation : annotations) {
       replacement.append(annotation);
       replacement.append(lineSeparator);
     }
-    Set<Modifier> flags = createSuggestedFlags(modifiers);
+    Set<Modifier> flags = createSuggestedFlags(tree.getModifiers());
     replacement.append(stringify(flags));
-    return SuggestedFix.builder().replace(modifiers, replacement.toString()).build();
+
+    Builder builder = SuggestedFix.builder();
+    if (!tree.getModifiers().toString().isEmpty()) {
+      builder.delete(tree.getModifiers());
+    }
+    return builder.prefixWith(tree.getType(), replacement.toString()).build();
   }
 
   private Set<Modifier> createSuggestedFlags(ModifiersTree modifiers) {
@@ -124,6 +130,6 @@ public class DoNotPublishSlf4jLogger extends BugChecker implements VariableTreeM
   private String stringify(Set<Modifier> flags) {
     List<Modifier> sortedFlags = new ArrayList<>(flags);
     sortedFlags.sort(MODIFIER_COMPARATOR);
-    return sortedFlags.stream().map(Object::toString).collect(Collectors.joining(" "));
+    return sortedFlags.stream().map(Object::toString).collect(Collectors.joining(" ")).concat(" ");
   }
 }

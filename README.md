@@ -10,7 +10,7 @@ After [installation of Error Prone](https://errorprone.info/docs/installation), 
 
 ### Maven
 
-Add `<annotationProcessorPaths>` into configuration of `maven-compiler-plugin` like below:
+`maven-compiler-plugin` supports `<annotationProcessorPaths>` from version 3.5. Use it in configuration of `maven-compiler-plugin` like below:
 
 ```xml
 <plugin>
@@ -42,13 +42,13 @@ dependencies {
 
 ## Copyright
 
-Copyright 2012-2017 Kengo TODA
+Copyright 2012-2018 Kengo TODA
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,

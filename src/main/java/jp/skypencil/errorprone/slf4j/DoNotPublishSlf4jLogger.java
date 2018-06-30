@@ -33,7 +33,7 @@ import javax.annotation.Nullable;
 import javax.lang.model.element.Modifier;
 
 @BugPattern(
-    name = "DoNotPublishSlf4jLogger",
+    name = "Slf4jLoggerShouldBePrivate",
     summary = "Do not publish Logger field, it should be private",
     tags = {"SLF4J"},
     severity = WARNING)
@@ -77,7 +77,7 @@ public class DoNotPublishSlf4jLogger extends BugChecker implements VariableTreeM
       Fix fix = createSuggestedFix(tree);
       return Description.builder(
               tree,
-              "DoNotPublishSlf4jLogger",
+              "Slf4jLoggerShouldBePrivate",
               null,
               WARNING,
               "Do not publish Logger field, it should be private")

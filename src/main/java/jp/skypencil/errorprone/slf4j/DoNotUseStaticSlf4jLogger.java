@@ -71,7 +71,7 @@ public class DoNotUseStaticSlf4jLogger extends BugChecker implements VariableTre
       return Description.builder(
               tree,
               "Slf4jLoggerShouldBeNonStatic",
-              null,
+              "https://github.com/KengoTODA/findbugs-slf4j#slf4j_logger_should_be_non_static",
               SUGGESTION,
               "Do not use static Logger field, use non-static one instead")
           .addFix(fix)

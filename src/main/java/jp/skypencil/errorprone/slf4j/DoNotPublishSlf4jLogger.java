@@ -16,20 +16,15 @@ import com.google.errorprone.fixes.SuggestedFix;
 import com.google.errorprone.fixes.SuggestedFix.Builder;
 import com.google.errorprone.matchers.Description;
 import com.google.errorprone.matchers.Matcher;
-import com.google.errorprone.util.ASTHelpers;
 import com.sun.source.tree.AnnotationTree;
 import com.sun.source.tree.ModifiersTree;
 import com.sun.source.tree.VariableTree;
-import com.sun.tools.javac.code.Symbol;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import javax.annotation.Nullable;
 import javax.lang.model.element.Modifier;
 
 @BugPattern(
@@ -78,7 +73,7 @@ public class DoNotPublishSlf4jLogger extends BugChecker implements VariableTreeM
       return Description.builder(
               tree,
               "Slf4jLoggerShouldBePrivate",
-              null,
+              "https://github.com/KengoTODA/findbugs-slf4j#slf4j_logger_should_be_private",
               WARNING,
               "Do not publish Logger field, it should be private")
           .addFix(fix)
@@ -93,18 +88,6 @@ public class DoNotPublishSlf4jLogger extends BugChecker implements VariableTreeM
     @Override
     public boolean matches(VariableTree tree, VisitorState state) {
       return tree.getModifiers().getFlags().contains(Modifier.PRIVATE);
-    }
-  }
-
-  private static final class LoggerMatcher implements Matcher<VariableTree> {
-    private static final long serialVersionUID = -682327741943438574L;
-    private static final String FQN_SLF4J_LOGGER = "org.slf4j.Logger";
-
-    @Override
-    public boolean matches(VariableTree tree, VisitorState state) {
-      @Nullable
-      Symbol symbol = ASTHelpers.getSymbol(tree.getType());
-      return symbol != null && FQN_SLF4J_LOGGER.equals(symbol.toString());
     }
   }
 

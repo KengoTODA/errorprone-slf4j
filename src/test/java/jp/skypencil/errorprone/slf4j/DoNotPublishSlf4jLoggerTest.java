@@ -19,8 +19,7 @@ public class DoNotPublishSlf4jLoggerTest {
                 + "import org.slf4j.LoggerFactory;\n"
                 + "\n"
                 + "public class PublicLogger {\n"
-                + "    public static Logger LOGGER = LoggerFactory.getLogger(\"static\");\n"
-                + "    public Logger logger = LoggerFactory.getLogger(getClass());\n"
+                + "    public Logger logger = LoggerFactory.getLogger(PublicLogger.class);\n"
                 + "}")
         .addOutputLines(
             "PublicLogger.java",
@@ -28,8 +27,7 @@ public class DoNotPublishSlf4jLoggerTest {
                 + "import org.slf4j.LoggerFactory;\n"
                 + "\n"
                 + "public class PublicLogger {\n"
-                + "    private static Logger LOGGER = LoggerFactory.getLogger(\"static\");\n"
-                + "    private Logger logger = LoggerFactory.getLogger(getClass());\n"
+                + "    private Logger logger = LoggerFactory.getLogger(PublicLogger.class);\n"
                 + "}\n"
                 + "")
         .doTest(TestMode.TEXT_MATCH);
@@ -47,7 +45,6 @@ public class DoNotPublishSlf4jLoggerTest {
                 + "import org.slf4j.LoggerFactory;\n"
                 + "\n"
                 + "public class ProtectedLogger {\n"
-                + "    protected static Logger LOGGER = LoggerFactory.getLogger(\"static\");\n"
                 + "    protected Logger logger = LoggerFactory.getLogger(getClass());\n"
                 + "}")
         .addOutputLines(
@@ -56,7 +53,6 @@ public class DoNotPublishSlf4jLoggerTest {
                 + "import org.slf4j.LoggerFactory;\n"
                 + "\n"
                 + "public class ProtectedLogger {\n"
-                + "    private static Logger LOGGER = LoggerFactory.getLogger(\"static\");\n"
                 + "    private Logger logger = LoggerFactory.getLogger(getClass());\n"
                 + "}\n"
                 + "")
@@ -75,7 +71,6 @@ public class DoNotPublishSlf4jLoggerTest {
                 + "import org.slf4j.LoggerFactory;\n"
                 + "\n"
                 + "public class PackagePrivateLogger {\n"
-                + "    static Logger LOGGER = LoggerFactory.getLogger(\"static\");\n"
                 + "    Logger logger = LoggerFactory.getLogger(getClass());\n"
                 + "}")
         .addOutputLines(
@@ -84,7 +79,6 @@ public class DoNotPublishSlf4jLoggerTest {
                 + "import org.slf4j.LoggerFactory;\n"
                 + "\n"
                 + "public class PackagePrivateLogger {\n"
-                + "    private static Logger LOGGER = LoggerFactory.getLogger(\"static\");\n"
                 + "    private Logger logger = LoggerFactory.getLogger(getClass());\n"
                 + "}\n"
                 + "")

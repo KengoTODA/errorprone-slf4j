@@ -32,4 +32,34 @@ public class DoNotUseStaticSlf4jLoggerTest {
                 + "")
         .doTest(TestMode.TEXT_MATCH);
   }
+
+  @Test
+  public void testRefactoringWithAnnotation() throws IOException {
+    BugChecker checker = new DoNotUseStaticSlf4jLogger();
+    BugCheckerRefactoringTestHelper helper =
+        BugCheckerRefactoringTestHelper.newInstance(checker, getClass());
+    helper
+        .addInputLines(
+            "StaticLogger.java",
+            "import org.slf4j.Logger;\n"
+                + "import org.slf4j.LoggerFactory;\n"
+                + "\n"
+                + "public class StaticLogger {\n"
+                + "    @Deprecated"
+                + "    @SuppressWarnings(\"all\")"
+                + "    private static Logger LOGGER = LoggerFactory.getLogger(\"static\");\n"
+                + "}")
+        .addOutputLines(
+            "StaticLogger.java",
+            "import org.slf4j.Logger;\n"
+                + "import org.slf4j.LoggerFactory;\n"
+                + "\n"
+                + "public class StaticLogger {\n"
+                + "    @Deprecated"
+                + "    @SuppressWarnings(\"all\")"
+                + "    private Logger logger = LoggerFactory.getLogger(getClass());\n"
+                + "}\n"
+                + "")
+        .doTest(TestMode.TEXT_MATCH);
+  }
 }

@@ -10,13 +10,10 @@ import com.google.errorprone.BugPattern;
 import com.google.errorprone.VisitorState;
 import com.google.errorprone.bugpatterns.BugChecker;
 import com.google.errorprone.bugpatterns.BugChecker.VariableTreeMatcher;
-import com.google.errorprone.fixes.Fix;
+import com.google.errorprone.fixes.SuggestedFixes;
 import com.google.errorprone.matchers.Description;
 import com.google.errorprone.matchers.Matcher;
-import com.sun.source.tree.ModifiersTree;
 import com.sun.source.tree.VariableTree;
-import java.util.HashSet;
-import java.util.Set;
 import javax.lang.model.element.Modifier;
 
 @BugPattern(
@@ -29,24 +26,17 @@ public class PreferFinalSlf4jLogger extends BugChecker implements VariableTreeMa
   private static final long serialVersionUID = -5127926153475887075L;
   private static final Matcher<VariableTree> FINAL = new FinalMatcher();
   private static final Matcher<VariableTree> SLF4J_LOGGER = new LoggerMatcher();
-  private final VariableGenerator generator = new VariableGenerator();
 
   @Override
   public Description matchVariable(VariableTree tree, VisitorState state) {
     if (allOf(isField(), SLF4J_LOGGER, not(FINAL)).matches(tree, state)) {
-      Fix fix =
-          generator.createSuggestedFix(
-              state,
-              tree,
-              createSuggestedFlags(tree.getModifiers()),
-              state.getSourceForNode(tree.getInitializer()));
       return Description.builder(
               tree,
               "Slf4jLoggerShouldBeFinal",
               "https://github.com/KengoTODA/findbugs-slf4j#slf4j_logger_should_be_final",
               WARNING,
               "Logger field should be final")
-          .addFix(fix)
+          .addFix(SuggestedFixes.addModifiers(tree, state, Modifier.FINAL))
           .build();
     }
     return Description.NO_MATCH;
@@ -59,11 +49,5 @@ public class PreferFinalSlf4jLogger extends BugChecker implements VariableTreeMa
     public boolean matches(VariableTree tree, VisitorState state) {
       return tree.getModifiers().getFlags().contains(Modifier.FINAL);
     }
-  }
-
-  private Set<Modifier> createSuggestedFlags(ModifiersTree modifiers) {
-    Set<Modifier> flags = new HashSet<>(modifiers.getFlags());
-    flags.add(Modifier.FINAL);
-    return flags;
   }
 }

@@ -10,13 +10,12 @@ import com.google.errorprone.BugPattern;
 import com.google.errorprone.VisitorState;
 import com.google.errorprone.bugpatterns.BugChecker;
 import com.google.errorprone.bugpatterns.BugChecker.VariableTreeMatcher;
-import com.google.errorprone.fixes.Fix;
+import com.google.errorprone.fixes.SuggestedFix;
+import com.google.errorprone.fixes.SuggestedFix.Builder;
+import com.google.errorprone.fixes.SuggestedFixes;
 import com.google.errorprone.matchers.Description;
 import com.google.errorprone.matchers.Matcher;
-import com.sun.source.tree.ModifiersTree;
 import com.sun.source.tree.VariableTree;
-import java.util.HashSet;
-import java.util.Set;
 import javax.lang.model.element.Modifier;
 
 @BugPattern(
@@ -30,24 +29,21 @@ public class DoNotPublishSlf4jLogger extends BugChecker implements VariableTreeM
 
   private static final Matcher<VariableTree> PRIVATE = new PrivateMatcher();
   private static final Matcher<VariableTree> SLF4J_LOGGER = new LoggerMatcher();
-  private final VariableGenerator generator = new VariableGenerator();
 
   @Override
   public Description matchVariable(VariableTree tree, VisitorState state) {
     if (allOf(isField(), SLF4J_LOGGER, not(PRIVATE)).matches(tree, state)) {
-      Fix fix =
-          generator.createSuggestedFix(
-              state,
-              tree,
-              createSuggestedFlags(tree.getModifiers()),
-              state.getSourceForNode(tree.getInitializer()));
+      Builder builder = SuggestedFix.builder();
+      SuggestedFixes.addModifiers(tree, state, Modifier.PRIVATE).ifPresent(builder::merge);
+      SuggestedFixes.removeModifiers(tree, state, Modifier.PUBLIC, Modifier.PROTECTED)
+          .ifPresent(builder::merge);
       return Description.builder(
               tree,
               "Slf4jLoggerShouldBePrivate",
               "https://github.com/KengoTODA/findbugs-slf4j#slf4j_logger_should_be_private",
               WARNING,
               "Do not publish Logger field, it should be private")
-          .addFix(fix)
+          .addFix(builder.build())
           .build();
     }
     return Description.NO_MATCH;
@@ -60,13 +56,5 @@ public class DoNotPublishSlf4jLogger extends BugChecker implements VariableTreeM
     public boolean matches(VariableTree tree, VisitorState state) {
       return tree.getModifiers().getFlags().contains(Modifier.PRIVATE);
     }
-  }
-
-  private Set<Modifier> createSuggestedFlags(ModifiersTree modifiers) {
-    Set<Modifier> flags = new HashSet<>(modifiers.getFlags());
-    flags.add(Modifier.PRIVATE);
-    flags.remove(Modifier.PUBLIC);
-    flags.remove(Modifier.PROTECTED);
-    return flags;
   }
 }

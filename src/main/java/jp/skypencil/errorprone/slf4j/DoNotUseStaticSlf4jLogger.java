@@ -8,6 +8,7 @@ import static com.google.errorprone.matchers.Matchers.isStatic;
 import com.google.auto.service.AutoService;
 import com.google.common.base.CaseFormat;
 import com.google.errorprone.BugPattern;
+import com.google.errorprone.BugPattern.ProvidesFix;
 import com.google.errorprone.VisitorState;
 import com.google.errorprone.bugpatterns.BugChecker;
 import com.google.errorprone.bugpatterns.BugChecker.VariableTreeMatcher;
@@ -24,7 +25,8 @@ import javax.lang.model.element.Modifier;
     name = "Slf4jLoggerShouldBeNonStatic",
     summary = "Do not use static Logger field, use non-static one instead",
     tags = {"SLF4J"},
-    severity = SUGGESTION)
+    severity = SUGGESTION,
+    providesFix = ProvidesFix.REQUIRES_HUMAN_ATTENTION)
 @AutoService(BugChecker.class)
 public class DoNotUseStaticSlf4jLogger extends BugChecker implements VariableTreeMatcher {
   private static final long serialVersionUID = 2656759159827947106L;

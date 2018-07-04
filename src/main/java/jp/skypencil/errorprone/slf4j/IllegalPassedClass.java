@@ -11,18 +11,18 @@ import com.google.errorprone.bugpatterns.BugChecker.VariableTreeMatcher;
 import com.google.errorprone.fixes.SuggestedFix;
 import com.google.errorprone.matchers.Description;
 import com.google.errorprone.matchers.Description.Builder;
+import com.google.errorprone.matchers.Matcher;
+import com.google.errorprone.matchers.method.MethodMatchers;
 import com.google.errorprone.util.ASTHelpers;
 import com.sun.source.tree.ClassTree;
 import com.sun.source.tree.ExpressionTree;
 import com.sun.source.tree.MethodInvocationTree;
 import com.sun.source.tree.VariableTree;
 import com.sun.source.util.TreeScanner;
-import com.sun.tools.javac.code.Symbol;
 import com.sun.tools.javac.code.Symbol.ClassSymbol;
 import com.sun.tools.javac.code.Symbol.TypeSymbol;
 import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.code.Type.ClassType;
-import java.util.Optional;
 import javax.lang.model.element.Modifier;
 
 @BugPattern(
@@ -38,8 +38,8 @@ public class IllegalPassedClass extends BugChecker implements VariableTreeMatche
 
   @Override
   public Description matchVariable(VariableTree tree, VisitorState state) {
-    Optional<TypeSymbol> type = tree.getInitializer().accept(new LoggerInitializerVisitor(), null);
-    if (!type.isPresent()) {
+    TypeSymbol type = tree.getInitializer().accept(new LoggerInitializerVisitor(), state);
+    if (type == null) {
       return Description.NO_MATCH;
     }
 
@@ -49,7 +49,7 @@ public class IllegalPassedClass extends BugChecker implements VariableTreeMatche
     }
 
     ClassSymbol enclosingSymbol = ASTHelpers.getSymbol(enclosing);
-    if (type.get().equals(enclosingSymbol)) {
+    if (type.equals(enclosingSymbol)) {
       return Description.NO_MATCH;
     }
 
@@ -62,7 +62,7 @@ public class IllegalPassedClass extends BugChecker implements VariableTreeMatche
             "LoggerFactory.getLogger(Class) should get "
                 + enclosingSymbol.className()
                 + " but it gets "
-                + type.get().getSimpleName());
+                + type.getSimpleName());
     if (!tree.getModifiers().getFlags().contains(Modifier.STATIC)) {
       builder.addFix(
           SuggestedFix.builder()
@@ -79,29 +79,23 @@ public class IllegalPassedClass extends BugChecker implements VariableTreeMatche
   }
 
   private static final class LoggerInitializerVisitor
-      extends TreeScanner<Optional<TypeSymbol>, Void> {
+      extends TreeScanner<TypeSymbol, VisitorState> {
     @Override
-    public Optional<TypeSymbol> visitMethodInvocation(MethodInvocationTree node, Void v) {
-      Symbol method = ASTHelpers.getSymbol(node.getMethodSelect());
-      Symbol clazz = method.enclClass();
-      String methodName = method.toString();
-
-      if ("org.slf4j.LoggerFactory".equals(clazz.toString())
-          && methodName.startsWith("getLogger(")) {
-        switch (methodName) {
-          case "getLogger(java.lang.String)":
-            // nothing to check
-            break;
-          case "getLogger(java.lang.Class<?>)":
-            ExpressionTree arg = node.getArguments().get(0);
-            ClassType type = (ClassType) ASTHelpers.getType(arg);
-            Type typeParameter = type.getTypeArguments().get(0);
-            return Optional.of(typeParameter.asElement());
-          default:
-            throw new AssertionError("Unknown getLogger method at " + node);
-        }
+    public TypeSymbol visitMethodInvocation(MethodInvocationTree node, VisitorState state) {
+      if (!isGetLogger.matches(node, state)) {
+        return null;
       }
-      return Optional.empty();
+
+      ExpressionTree arg = node.getArguments().get(0);
+      ClassType type = (ClassType) ASTHelpers.getType(arg);
+      Type typeParameter = type.getTypeArguments().get(0);
+      return typeParameter.asElement();
     }
+
+    private final Matcher<ExpressionTree> isGetLogger =
+        MethodMatchers.staticMethod()
+            .onClass("org.slf4j.LoggerFactory")
+            .named("getLogger")
+            .withParameters("java.lang.Class");
   }
 }

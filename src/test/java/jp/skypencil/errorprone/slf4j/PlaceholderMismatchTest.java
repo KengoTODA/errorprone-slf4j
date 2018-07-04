@@ -1,13 +1,22 @@
 package jp.skypencil.errorprone.slf4j;
 
 import com.google.errorprone.CompilationTestHelper;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
+@RunWith(JUnit4.class)
 public class PlaceholderMismatchTest {
+  private CompilationTestHelper helper;
+
+  @Before
+  public void setup() {
+    helper = CompilationTestHelper.newInstance(PlaceholderMismatch.class, getClass());
+  }
+
   @Test
   public void testNonConstantFormat() {
-    CompilationTestHelper helper =
-        CompilationTestHelper.newInstance(PlaceholderMismatch.class, getClass());
     helper
         .addSourceLines(
             "NonConstantFormat.java",
@@ -17,10 +26,11 @@ public class PlaceholderMismatchTest {
                 + "public class NonConstantFormat {\n"
                 + "    private final Logger logger = LoggerFactory.getLogger(getClass());\n"
                 + "    void method() {\n"
-                + "        logger.info(this + \"{}\")"
+                + "        logger.info(this + \"{}\");"
                 + "    }\n"
                 + "}")
-        .expectNoDiagnostics();
+        .expectNoDiagnostics()
+        .doTest();
   }
 
   @Test
@@ -33,19 +43,21 @@ public class PlaceholderMismatchTest {
             "import org.slf4j.Logger;\n"
                 + "import org.slf4j.LoggerFactory;\n"
                 + "import org.slf4j.MarkerFactory;\n"
+                + "import org.slf4j.Marker;\n"
                 + "\n"
                 + "public class WithMarker {\n"
                 + "    private final Logger logger = LoggerFactory.getLogger(getClass());\n"
-                + "    private final Marker marker = MarkerFactory.getMarker(\"Sample\");"
+                + "    private final Marker marker = MarkerFactory.getMarker(\"Sample\");\n"
                 + "    void method() {\n"
-                + "        logger.info(marker, \"I have one placeholder, one parameter and one marker instance. {}\", 1)"
+                + "        logger.info(marker, \"I have one placeholder, one parameter and one marker instance. {}\", 1);"
                 + "    }\n"
                 + "}")
-        .expectNoDiagnostics();
+        .expectNoDiagnostics()
+        .doTest();
   }
 
   @Test
-  public void testThroable() {
+  public void testThrowable() {
     CompilationTestHelper helper =
         CompilationTestHelper.newInstance(PlaceholderMismatch.class, getClass());
     helper
@@ -57,10 +69,11 @@ public class PlaceholderMismatchTest {
                 + "public class WithThrowable {\n"
                 + "    private final Logger logger = LoggerFactory.getLogger(getClass());\n"
                 + "    void method() {\n"
-                + "        logger.info(\"I have one placeholder, one parameter and one throwable instance. {}\", 1, new Exception())"
+                + "        logger.info(\"I have one placeholder, one parameter and one throwable instance. {}\", 1, new Exception());"
                 + "    }\n"
                 + "}")
-        .expectNoDiagnostics();
+        .expectNoDiagnostics()
+        .doTest();
   }
 
   @Test
@@ -76,12 +89,11 @@ public class PlaceholderMismatchTest {
                 + "public class TooManyPlaceholders {\n"
                 + "    private final Logger logger = LoggerFactory.getLogger(getClass());\n"
                 + "    void method() {\n"
-                + "        logger.info(\"I have two placeholders and one parameter! {} {}\", 1)"
+                + "        // BUG: Diagnostic contains: Count of placeholder (2) does not match with count of parameter (1)\n"
+                + "        logger.info(\"I have two placeholders and one parameter! {} {}\", 1);"
                 + "    }\n"
                 + "}")
-        .expectErrorMessage(
-            "Slf4jPlaceholderMismatch",
-            "Count of placeholder (2) does not match with count of parameter (1)"::equals);
+        .doTest();
   }
 
   @Test
@@ -97,11 +109,10 @@ public class PlaceholderMismatchTest {
                 + "public class TooManyParams {\n"
                 + "    private final Logger logger = LoggerFactory.getLogger(getClass());\n"
                 + "    void method() {\n"
-                + "        logger.info(\"I have one placeholder and two parameters! {}\", 1, 2)"
+                + "        // BUG: Diagnostic contains: Count of placeholder (1) does not match with count of parameter (2)\n"
+                + "        logger.info(\"I have one placeholder and two parameters! {}\", 1, 2);"
                 + "    }\n"
                 + "}")
-        .expectErrorMessage(
-            "Slf4jPlaceholderMismatch",
-            "Count of placeholder (1) does not match with count of parameter (2)"::equals);
+        .doTest();
   }
 }

@@ -38,7 +38,6 @@ public class DoNotUseStaticSlf4jLogger extends BugChecker implements VariableTre
       Builder builder = SuggestedFix.builder();
       SuggestedFixes.removeModifiers(tree, state, Modifier.STATIC).ifPresent(builder::merge);
       suggestRename(tree, state).ifPresent(builder::merge);
-      suggestInitializer(tree, state).ifPresent(builder::merge);
 
       return Description.builder(
               tree,
@@ -50,20 +49,6 @@ public class DoNotUseStaticSlf4jLogger extends BugChecker implements VariableTre
           .build();
     }
     return Description.NO_MATCH;
-  }
-
-  private static final String SUGGESTED_INITIALIZER = "LoggerFactory.getLogger(getClass())";
-
-  private Optional<SuggestedFix> suggestInitializer(VariableTree tree, VisitorState state) {
-    String initializer = tree.getInitializer().toString();
-    if (initializer.equals(SUGGESTED_INITIALIZER)) {
-      return Optional.empty();
-    }
-    return Optional.of(
-        SuggestedFix.builder()
-            .replace(tree.getInitializer(), SUGGESTED_INITIALIZER)
-            .addImport("org.slf4j.LoggerFactory")
-            .build());
   }
 
   private Optional<SuggestedFix> suggestRename(VariableTree tree, VisitorState state) {

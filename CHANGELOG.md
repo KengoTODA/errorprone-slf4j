@@ -4,6 +4,10 @@ This changelog follows [Keep a Changelog v1.0.0](https://keepachangelog.com/en/1
 
 ## Unreleased
 
+### Added
+
+* Slf4jIllegalPassedClass suggests not only inner class but also outer classes
+
 ### Fixed
 
 * Many bugs in PlaceholderMismatch bug pattern

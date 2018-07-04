@@ -7,6 +7,8 @@ This changelog follows [Keep a Changelog v1.0.0](https://keepachangelog.com/en/1
 ### Added
 
 * Slf4jIllegalPassedClass suggests not only inner class but also outer classes
+* new Slf4jFormatShouldBeConst bug pattern
+* new Slf4jSignOnlyFormat bug pattern
 
 ### Fixed
 

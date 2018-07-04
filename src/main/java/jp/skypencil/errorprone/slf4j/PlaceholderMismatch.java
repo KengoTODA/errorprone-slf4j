@@ -3,9 +3,6 @@ package jp.skypencil.errorprone.slf4j;
 import static com.google.errorprone.BugPattern.SeverityLevel.ERROR;
 import static com.google.errorprone.matchers.Matchers.isSubtypeOf;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.google.auto.service.AutoService;
 import com.google.common.collect.ImmutableSet;
 import com.google.errorprone.BugPattern;
@@ -19,6 +16,8 @@ import com.sun.source.tree.MethodInvocationTree;
 import com.sun.tools.javac.code.Symbol;
 import com.sun.tools.javac.code.Symbol.VarSymbol;
 import com.sun.tools.javac.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @BugPattern(
     name = "Slf4jPlaceholderMismatch",
@@ -86,13 +85,14 @@ public class PlaceholderMismatch extends BugChecker implements MethodInvocationT
     return Description.NO_MATCH;
   }
 
-  private static final com.google.errorprone.matchers.Matcher<ExpressionTree> javaLangThrowable = isSubtypeOf("java.lang.Throwable");
+  private static final com.google.errorprone.matchers.Matcher<ExpressionTree> javaLangThrowable =
+      isSubtypeOf("java.lang.Throwable");
 
   private boolean isThrowable(ExpressionTree expressionTree, VisitorState state) {
-	return javaLangThrowable.matches(expressionTree, state);
-}
+    return javaLangThrowable.matches(expressionTree, state);
+  }
 
-boolean equals(VarSymbol symbol, String name) {
+  boolean equals(VarSymbol symbol, String name) {
     return name.equals(symbol.getQualifiedName().toString());
   }
 

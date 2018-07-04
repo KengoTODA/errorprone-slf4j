@@ -23,7 +23,7 @@ After [installation of Error Prone](https://errorprone.info/docs/installation), 
       <path>
         <groupId>jp.skypencil.errorprone.slf4j</groupId>
         <artifactId>errorprone-slf4j</artifactId>
-        <version>0.1.0</version>
+        <version>0.1.1</version>
       </path>
     </annotationProcessorPaths>
   </configuration>
@@ -36,7 +36,7 @@ From v4.6, [Gradle supports `annotationProcessor` configuration](https://docs.gr
 
 ```groovy
 dependencies {
-  annotationProcessor 'jp.skypencil.errorprone.slf4j:errorprone-slf4j:0.1.0'
+  annotationProcessor 'jp.skypencil.errorprone.slf4j:errorprone-slf4j:0.1.1'
 }
 ```
 

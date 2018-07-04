@@ -4,6 +4,8 @@ This changelog follows [Keep a Changelog v1.0.0](https://keepachangelog.com/en/1
 
 ## Unreleased
 
+## v0.1.1 - 2018-07-05
+
 ### Added
 
 * Slf4jIllegalPassedClass suggests not only inner class but also outer classes

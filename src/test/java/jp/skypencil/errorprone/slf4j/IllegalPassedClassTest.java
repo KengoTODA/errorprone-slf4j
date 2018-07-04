@@ -92,7 +92,39 @@ public class IllegalPassedClassTest {
   public void testRefactoringInnerClass() throws IOException {
     BugChecker checker = new IllegalPassedClass();
     BugCheckerRefactoringTestHelper helper =
-        BugCheckerRefactoringTestHelper.newInstance(checker, getClass());
+        BugCheckerRefactoringTestHelper.newInstance(checker, getClass())
+            .setFixChooser(FixChoosers.SECOND);
+    helper
+        .addInputLines(
+            "PrivateLogger.java",
+            "import org.slf4j.Logger;\n"
+                + "import org.slf4j.LoggerFactory;\n"
+                + "\n"
+                + "public class PrivateLogger {\n"
+                + "    private static class InnerClass {\n"
+                + "        private static final Logger LOGGER = LoggerFactory.getLogger(String.class);\n"
+                + "    }\n"
+                + "}")
+        .addOutputLines(
+            "PrivateLogger.java",
+            "import org.slf4j.Logger;\n"
+                + "import org.slf4j.LoggerFactory;\n"
+                + "\n"
+                + "public class PrivateLogger {\n"
+                + "    private static class InnerClass {\n"
+                + "        private static final Logger LOGGER = LoggerFactory.getLogger(PrivateLogger.class);\n"
+                + "    }\n"
+                + "}\n"
+                + "")
+        .doTest(TestMode.TEXT_MATCH);
+  }
+
+  @Test
+  public void testRefactoringInnerClass2() throws IOException {
+    BugChecker checker = new IllegalPassedClass();
+    BugCheckerRefactoringTestHelper helper =
+        BugCheckerRefactoringTestHelper.newInstance(checker, getClass())
+            .setFixChooser(FixChoosers.FIRST);
     helper
         .addInputLines(
             "PrivateLogger.java",

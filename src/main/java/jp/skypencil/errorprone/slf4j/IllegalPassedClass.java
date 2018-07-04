@@ -23,6 +23,10 @@ import com.sun.tools.javac.code.Symbol.ClassSymbol;
 import com.sun.tools.javac.code.Symbol.TypeSymbol;
 import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.code.Type.ClassType;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.lang.model.element.Modifier;
 
 @BugPattern(
@@ -43,39 +47,49 @@ public class IllegalPassedClass extends BugChecker implements VariableTreeMatche
       return Description.NO_MATCH;
     }
 
-    ClassTree enclosing = state.findEnclosing(ClassTree.class);
-    if (enclosing == null) {
-      return Description.NO_MATCH;
-    }
-
-    ClassSymbol enclosingSymbol = ASTHelpers.getSymbol(enclosing);
-    if (type.equals(enclosingSymbol)) {
-      return Description.NO_MATCH;
-    }
-
+    List<ClassSymbol> enclosingClasses = listEnclosingClasses(state);
+    String message =
+        String.format(
+            "LoggerFactory.getLogger(Class) should get one of [%s] but it gets %s",
+            enclosingClasses.stream().map(ClassSymbol::className).collect(Collectors.joining(",")),
+            type.getSimpleName());
     Builder builder =
         Description.builder(
             tree,
             "Slf4jIllegalPassedClass",
             "https://github.com/KengoTODA/findbugs-slf4j#slf4j_illegal_passed_class",
             WARNING,
-            "LoggerFactory.getLogger(Class) should get "
-                + enclosingSymbol.className()
-                + " but it gets "
-                + type.getSimpleName());
+            message);
     if (!tree.getModifiers().getFlags().contains(Modifier.STATIC)) {
       builder.addFix(
           SuggestedFix.builder()
               .replace(tree.getInitializer(), "LoggerFactory.getLogger(getClass())")
               .build());
     }
-    builder.addFix(
-        SuggestedFix.builder()
-            .replace(
-                tree.getInitializer(),
-                "LoggerFactory.getLogger(" + enclosingSymbol.getSimpleName() + ".class)")
-            .build());
+    for (ClassSymbol enclosingSymbol : enclosingClasses) {
+      builder.addFix(
+          SuggestedFix.builder()
+              .replace(
+                  tree.getInitializer(),
+                  "LoggerFactory.getLogger(" + enclosingSymbol.getSimpleName() + ".class)")
+              .build());
+    }
     return builder.build();
+  }
+
+  private List<ClassSymbol> listEnclosingClasses(VisitorState state) {
+    ClassTree enclosing = state.findEnclosing(ClassTree.class);
+    if (enclosing == null) {
+      return Collections.emptyList();
+    }
+
+    List<ClassSymbol> result = new ArrayList<>();
+    ClassSymbol enclosingSymbol = ASTHelpers.getSymbol(enclosing);
+    while (enclosingSymbol != null) {
+      result.add(enclosingSymbol);
+      enclosingSymbol = ASTHelpers.enclosingClass(enclosingSymbol);
+    }
+    return result;
   }
 
   private static final class LoggerInitializerVisitor

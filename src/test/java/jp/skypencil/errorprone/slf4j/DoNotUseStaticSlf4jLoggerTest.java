@@ -27,7 +27,7 @@ public class DoNotUseStaticSlf4jLoggerTest {
                 + "import org.slf4j.LoggerFactory;\n"
                 + "\n"
                 + "public class StaticLogger {\n"
-                + "    private Logger logger = LoggerFactory.getLogger(getClass());\n"
+                + "    private Logger logger = LoggerFactory.getLogger(\"static\");\n"
                 + "}\n"
                 + "")
         .doTest(TestMode.TEXT_MATCH);
@@ -57,7 +57,7 @@ public class DoNotUseStaticSlf4jLoggerTest {
                 + "public class StaticLogger {\n"
                 + "    @Deprecated"
                 + "    @SuppressWarnings(\"all\")"
-                + "    private Logger logger = LoggerFactory.getLogger(getClass());\n"
+                + "    private Logger logger = LoggerFactory.getLogger(\"static\");\n"
                 + "}\n"
                 + "")
         .doTest(TestMode.TEXT_MATCH);

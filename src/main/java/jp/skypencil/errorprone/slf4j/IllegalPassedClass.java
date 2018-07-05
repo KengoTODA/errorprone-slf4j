@@ -60,6 +60,12 @@ public class IllegalPassedClass extends BugChecker implements VariableTreeMatche
             "https://github.com/KengoTODA/findbugs-slf4j#slf4j_illegal_passed_class",
             WARNING,
             message);
+
+    for (ClassSymbol enclosingSymbol : enclosingClasses) {
+      if (ASTHelpers.isSameType(type.type, enclosingSymbol.type, state)) {
+        return Description.NO_MATCH;
+      }
+    }
     if (!tree.getModifiers().getFlags().contains(Modifier.STATIC)) {
       builder.addFix(
           SuggestedFix.builder()

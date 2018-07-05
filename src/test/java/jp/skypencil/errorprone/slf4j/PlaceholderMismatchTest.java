@@ -115,4 +115,44 @@ public class PlaceholderMismatchTest {
                 + "}")
         .doTest();
   }
+
+  @Test
+  public void testVarArg() {
+    CompilationTestHelper helper =
+        CompilationTestHelper.newInstance(PlaceholderMismatch.class, getClass());
+    helper
+        .addSourceLines(
+            "VarArg.java",
+            "import org.slf4j.Logger;\n"
+                + "import org.slf4j.LoggerFactory;\n"
+                + "\n"
+                + "public class VarArg {\n"
+                + "    private final Logger logger = LoggerFactory.getLogger(getClass());\n"
+                + "    void method() {\n"
+                + "        logger.info(\"I have four placeholders and parameters! {}, {}, {}, {}\", 1, 2, 3, 4);"
+                + "    }\n"
+                + "}")
+        .expectNoDiagnostics()
+        .doTest();
+  }
+
+  @Test
+  public void testVarArgWithException() {
+    CompilationTestHelper helper =
+        CompilationTestHelper.newInstance(PlaceholderMismatch.class, getClass());
+    helper
+        .addSourceLines(
+            "VarArg.java",
+            "import org.slf4j.Logger;\n"
+                + "import org.slf4j.LoggerFactory;\n"
+                + "\n"
+                + "public class VarArg {\n"
+                + "    private final Logger logger = LoggerFactory.getLogger(getClass());\n"
+                + "    void method() {\n"
+                + "        logger.info(\"I have four placeholders and parameters! {}, {}, {}, {}\", 1, 2, 3, 4, new Error());"
+                + "    }\n"
+                + "}")
+        .expectNoDiagnostics()
+        .doTest();
+  }
 }

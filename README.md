@@ -1,7 +1,7 @@
 # Find and fix misusage of SLF4J with Google Error Prone
 
 This is a plugin for [Google Error Prone](http://errorprone.info/), that detects misusage of [SLF4J](https://www.slf4j.org/).
-This provides almost same feature with [findbugs-slf4j](https://github.com/KengoTODA/findbugs-slf4j). 
+This provides almost same feature with [findbugs-slf4j](https://github.com/KengoTODA/findbugs-slf4j).
 
 [![Build Status](https://travis-ci.com/KengoTODA/errorprone-slf4j.svg?branch=master)](https://travis-ci.com/KengoTODA/errorprone-slf4j)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=jp.skypencil.errorprone.slf4j%3Aerrorprone-slf4j&metric=alert_status)](https://sonarcloud.io/dashboard?id=jp.skypencil.errorprone.slf4j%3Aerrorprone-slf4j)
@@ -38,7 +38,7 @@ After [installation of Error Prone](https://errorprone.info/docs/installation), 
       <path>
         <groupId>jp.skypencil.errorprone.slf4j</groupId>
         <artifactId>errorprone-slf4j</artifactId>
-        <version>0.1.1</version>
+        <version>0.1.2</version>
       </path>
     </annotationProcessorPaths>
   </configuration>
@@ -51,7 +51,7 @@ From v4.6, [Gradle supports `annotationProcessor` configuration](https://docs.gr
 
 ```groovy
 dependencies {
-  annotationProcessor 'jp.skypencil.errorprone.slf4j:errorprone-slf4j:0.1.1'
+  annotationProcessor 'jp.skypencil.errorprone.slf4j:errorprone-slf4j:0.1.2'
 }
 ```
 

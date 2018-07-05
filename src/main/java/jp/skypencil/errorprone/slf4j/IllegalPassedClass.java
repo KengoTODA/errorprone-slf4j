@@ -7,7 +7,7 @@ import com.google.errorprone.BugPattern;
 import com.google.errorprone.BugPattern.ProvidesFix;
 import com.google.errorprone.VisitorState;
 import com.google.errorprone.bugpatterns.BugChecker;
-import com.google.errorprone.bugpatterns.BugChecker.VariableTreeMatcher;
+import com.google.errorprone.bugpatterns.BugChecker.MethodInvocationTreeMatcher;
 import com.google.errorprone.fixes.SuggestedFix;
 import com.google.errorprone.matchers.Description;
 import com.google.errorprone.matchers.Description.Builder;
@@ -36,13 +36,13 @@ import javax.lang.model.element.Modifier;
     severity = WARNING,
     providesFix = ProvidesFix.REQUIRES_HUMAN_ATTENTION)
 @AutoService(BugChecker.class)
-public class IllegalPassedClass extends BugChecker implements VariableTreeMatcher {
+public class IllegalPassedClass extends BugChecker implements MethodInvocationTreeMatcher {
 
   private static final long serialVersionUID = 8309704818374164342L;
 
   @Override
-  public Description matchVariable(VariableTree tree, VisitorState state) {
-    TypeSymbol type = tree.getInitializer().accept(new LoggerInitializerVisitor(), state);
+  public Description matchMethodInvocation(MethodInvocationTree tree, VisitorState state) {
+    TypeSymbol type = tree.accept(new LoggerInitializerVisitor(), state);
     if (type == null) {
       return Description.NO_MATCH;
     }
@@ -66,18 +66,15 @@ public class IllegalPassedClass extends BugChecker implements VariableTreeMatche
         return Description.NO_MATCH;
       }
     }
-    if (!tree.getModifiers().getFlags().contains(Modifier.STATIC)) {
+    VariableTree variableTree = state.findEnclosing(VariableTree.class);
+    if (variableTree != null && !variableTree.getModifiers().getFlags().contains(Modifier.STATIC)) {
       builder.addFix(
-          SuggestedFix.builder()
-              .replace(tree.getInitializer(), "LoggerFactory.getLogger(getClass())")
-              .build());
+          SuggestedFix.builder().replace(tree.getArguments().get(0), "getClass()").build());
     }
     for (ClassSymbol enclosingSymbol : enclosingClasses) {
       builder.addFix(
           SuggestedFix.builder()
-              .replace(
-                  tree.getInitializer(),
-                  "LoggerFactory.getLogger(" + enclosingSymbol.getSimpleName() + ".class)")
+              .replace(tree.getArguments().get(0), enclosingSymbol.getSimpleName() + ".class")
               .build());
     }
     return builder.build();

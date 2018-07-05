@@ -206,4 +206,22 @@ public class IllegalPassedClassTest {
         .expectNoDiagnostics()
         .doTest();
   }
+
+  @Test
+  public void testMethodParameter() throws IOException {
+    CompilationTestHelper helper =
+        CompilationTestHelper.newInstance(IllegalPassedClass.class, getClass());
+    helper
+        .addSourceLines(
+            "PrivateLogger.java",
+            "import org.slf4j.Logger;\n"
+                + "import org.slf4j.LoggerFactory;\n"
+                + "\n"
+                + "public class PrivateLogger {\n"
+                + "    private void method (String string) {\n"
+                + "    }\n"
+                + "}")
+        .expectNoDiagnostics()
+        .doTest();
+  }
 }

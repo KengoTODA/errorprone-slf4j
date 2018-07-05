@@ -13,8 +13,6 @@ import com.google.errorprone.util.ASTHelpers;
 import com.sun.source.tree.ExpressionTree;
 import com.sun.source.tree.MethodInvocationTree;
 import com.sun.tools.javac.code.Symbol;
-import com.sun.tools.javac.code.Symbol.VarSymbol;
-import com.sun.tools.javac.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -43,20 +41,19 @@ public class PlaceholderMismatch extends BugChecker implements MethodInvocationT
       return Description.NO_MATCH;
     }
 
-    List<VarSymbol> parameters = ASTHelpers.getSymbol(tree).getParameters();
-    int parameterSize = parameters.size() - 1; // -1 means 'formatString' is not parameter
+    java.util.List<? extends ExpressionTree> arguments = tree.getArguments();
+    int argumentSize = arguments.size() - 1; // -1 means 'formatString' is not parameter
     int formatIndex = 0;
-    if (equals(parameters.get(0), "org.slf4j.Marker")) {
-      parameterSize--;
+    if (IS_MARKER.matches(arguments.get(0), state)) {
+      argumentSize--;
       formatIndex = 1;
     }
-    if (isThrowable(tree.getArguments().get(parameters.size() - 1), state)) {
-      parameterSize--;
+    if (IS_THROWABLE.matches(arguments.get(arguments.size() - 1), state)) {
+      argumentSize--;
     }
-    if (parameterSize <= 0) {
+    if (argumentSize <= 0) {
       return Description.NO_MATCH;
     }
-
     Object constant = ASTHelpers.constValue(tree.getArguments().get(formatIndex));
     if (constant == null) {
       // format is not resolved at compile-phase
@@ -65,11 +62,11 @@ public class PlaceholderMismatch extends BugChecker implements MethodInvocationT
     String format = constant.toString();
 
     int placeholders = countPlaceholder(format);
-    if (parameterSize != placeholders) {
+    if (argumentSize != placeholders) {
       String message =
           String.format(
               "Count of placeholder (%d) does not match with count of parameter (%d)",
-              placeholders, parameterSize);
+              placeholders, argumentSize);
       return Description.builder(
               tree,
               "Slf4jPlaceholderMismatch",
@@ -81,16 +78,11 @@ public class PlaceholderMismatch extends BugChecker implements MethodInvocationT
     return Description.NO_MATCH;
   }
 
-  private static final com.google.errorprone.matchers.Matcher<ExpressionTree> javaLangThrowable =
+  private static final com.google.errorprone.matchers.Matcher<ExpressionTree> IS_MARKER =
+      isSubtypeOf("org.slf4j.Marker");
+
+  private static final com.google.errorprone.matchers.Matcher<ExpressionTree> IS_THROWABLE =
       isSubtypeOf("java.lang.Throwable");
-
-  private boolean isThrowable(ExpressionTree expressionTree, VisitorState state) {
-    return javaLangThrowable.matches(expressionTree, state);
-  }
-
-  boolean equals(VarSymbol symbol, String name) {
-    return name.equals(symbol.getQualifiedName().toString());
-  }
 
   int countPlaceholder(String format) {
     Matcher matcher = PLACEHOLDER_PATTERN.matcher(format);

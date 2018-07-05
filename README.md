@@ -1,8 +1,23 @@
 # Find and fix misusage of SLF4J with Google Error Prone
 
+This is a plugin for [Google Error Prone](http://errorprone.info/), that detects misusage of [SLF4J](https://www.slf4j.org/).
+This provides almost same feature with [findbugs-slf4j](https://github.com/KengoTODA/findbugs-slf4j). 
+
 [![Build Status](https://travis-ci.com/KengoTODA/errorprone-slf4j.svg?branch=master)](https://travis-ci.com/KengoTODA/errorprone-slf4j)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=jp.skypencil.errorprone.slf4j%3Aerrorprone-slf4j&metric=alert_status)](https://sonarcloud.io/dashboard?id=jp.skypencil.errorprone.slf4j%3Aerrorprone-slf4j)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/jp.skypencil.errorprone.slf4j/errorprone-slf4j/badge.svg)](https://maven-badges.herokuapp.com/maven-central/jp.skypencil.errorprone.slf4j/errorprone-slf4j)
+
+## Supported Bug Patterns
+
+Current version supports following bug patterns:
+
+* [Slf4jPlaceholderMismatch](https://github.com/KengoTODA/findbugs-slf4j#slf4j_place_holder_mismatch)
+* [Slf4jFormatShouldBeConst](https://github.com/KengoTODA/findbugs-slf4j#slf4j_format_should_be_const)
+* [Slf4jLoggerShouldBePrivate](https://github.com/KengoTODA/findbugs-slf4j#slf4j_logger_should_be_private)
+* [Slf4jLoggerShouldBeFinal](https://github.com/KengoTODA/findbugs-slf4j#slf4j_logger_should_be_final)
+* [Slf4jLoggerShouldBeNonStatic](https://github.com/KengoTODA/findbugs-slf4j#slf4j_logger_should_be_non_static)
+* [Slf4jIllegalPassedClass](https://github.com/KengoTODA/findbugs-slf4j#slf4j_illegal_passed_class)
+* [Slf4jSignOnlyFormat](https://github.com/KengoTODA/findbugs-slf4j#slf4j_sign_only_format)
 
 ## Install
 

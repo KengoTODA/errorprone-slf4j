@@ -6,7 +6,9 @@ This changelog follows [Keep a Changelog v1.0.0](https://keepachangelog.com/en/1
 
 ### Fixed
 
+* NPE in Slf4jIllegalPassedClass
 * false positive in Slf4jIllegalPassedClass
+* false positive in Slf4jPlaceholderMismatch
 
 ## v0.1.1 - 2018-07-05
 

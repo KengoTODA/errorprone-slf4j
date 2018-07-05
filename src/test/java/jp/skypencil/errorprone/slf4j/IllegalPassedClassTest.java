@@ -166,6 +166,44 @@ public class IllegalPassedClassTest {
                 + "    private final ILoggerFactory loggerFactory = LoggerFactory.getILoggerFactory();\n"
                 + "    private final Logger logger = LoggerFactory.getLogger(\"string\");\n"
                 + "}")
-        .expectNoDiagnostics();
+        .expectNoDiagnostics()
+        .doTest();
+  }
+
+  @Test
+  public void testClassWithoutProblem() throws IOException {
+    CompilationTestHelper helper =
+        CompilationTestHelper.newInstance(IllegalPassedClass.class, getClass());
+    helper
+        .addSourceLines(
+            "PrivateLogger.java",
+            "import org.slf4j.Logger;\n"
+                + "import org.slf4j.LoggerFactory;\n"
+                + "\n"
+                + "public class PrivateLogger {\n"
+                + "    private final Logger logger = LoggerFactory.getLogger(PrivateLogger.class);\n"
+                + "}")
+        .expectNoDiagnostics()
+        .doTest();
+  }
+
+  @Test
+  public void testInnerClassWithoutProblem() throws IOException {
+    CompilationTestHelper helper =
+        CompilationTestHelper.newInstance(IllegalPassedClass.class, getClass());
+    helper
+        .addSourceLines(
+            "PrivateLogger.java",
+            "import org.slf4j.Logger;\n"
+                + "import org.slf4j.LoggerFactory;\n"
+                + "\n"
+                + "public class PrivateLogger {\n"
+                + "    private static class InnerClass {\n"
+                + "        private static final Logger LOGGER = LoggerFactory.getLogger(InnerClass.class);\n"
+                + "        private final Logger logger = LoggerFactory.getLogger(PrivateLogger.class);\n"
+                + "    }\n"
+                + "}")
+        .expectNoDiagnostics()
+        .doTest();
   }
 }

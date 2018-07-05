@@ -4,7 +4,6 @@ import static com.google.errorprone.BugPattern.SeverityLevel.ERROR;
 import static com.google.errorprone.matchers.Matchers.isSubtypeOf;
 
 import com.google.auto.service.AutoService;
-import com.google.common.collect.ImmutableSet;
 import com.google.errorprone.BugPattern;
 import com.google.errorprone.VisitorState;
 import com.google.errorprone.bugpatterns.BugChecker;
@@ -30,15 +29,12 @@ public class PlaceholderMismatch extends BugChecker implements MethodInvocationT
   private static final long serialVersionUID = 1442638758364703416L;
   private static final Pattern PLACEHOLDER_PATTERN = Pattern.compile("(.?)(\\\\\\\\)*\\{\\}");
 
-  private static final ImmutableSet<String> TARGET_METHOD_NAMES =
-      ImmutableSet.of("trace", "debug", "info", "warn", "error");
-
   @Override
   public Description matchMethodInvocation(MethodInvocationTree tree, VisitorState state) {
     Symbol method = ASTHelpers.getSymbol(tree.getMethodSelect());
     String methodStr = method.toString();
     String methodName = methodStr.substring(0, methodStr.indexOf('('));
-    if (!TARGET_METHOD_NAMES.contains(methodName)) {
+    if (!Consts.TARGET_METHOD_NAMES.contains(methodName)) {
       return Description.NO_MATCH;
     }
 

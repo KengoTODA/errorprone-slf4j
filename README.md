@@ -38,7 +38,7 @@ After [installation of Error Prone](https://errorprone.info/docs/installation), 
       <path>
         <groupId>jp.skypencil.errorprone.slf4j</groupId>
         <artifactId>errorprone-slf4j</artifactId>
-        <version>0.1.2</version>
+        <version>0.1.3</version>
       </path>
     </annotationProcessorPaths>
   </configuration>

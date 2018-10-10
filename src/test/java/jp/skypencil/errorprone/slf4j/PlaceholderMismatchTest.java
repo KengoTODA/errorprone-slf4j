@@ -155,4 +155,24 @@ public class PlaceholderMismatchTest {
         .expectNoDiagnostics()
         .doTest();
   }
+
+  @Test
+  public void testNoParams() {
+    CompilationTestHelper helper =
+        CompilationTestHelper.newInstance(PlaceholderMismatch.class, getClass());
+    helper
+        .addSourceLines(
+            "NoParam.java",
+            "import org.slf4j.Logger;\n"
+                + "import org.slf4j.LoggerFactory;\n"
+                + "\n"
+                + "public class NoParam {\n"
+                + "    private final Logger logger = LoggerFactory.getLogger(getClass());\n"
+                + "    void method() {\n"
+                + "        // BUG: Diagnostic contains: Count of placeholder (1) does not match with count of parameter (0)\n"
+                + "        logger.info(\"I have one placeholder and no parameter! {}\");"
+                + "    }\n"
+                + "}")
+        .doTest();
+  }
 }

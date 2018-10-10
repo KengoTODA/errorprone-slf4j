@@ -51,7 +51,7 @@ public class PlaceholderMismatch extends BugChecker implements MethodInvocationT
     if (IS_THROWABLE.matches(arguments.get(arguments.size() - 1), state)) {
       argumentSize--;
     }
-    if (argumentSize <= 0) {
+    if (argumentSize < 0) {
       return Description.NO_MATCH;
     }
     Object constant = ASTHelpers.constValue(tree.getArguments().get(formatIndex));

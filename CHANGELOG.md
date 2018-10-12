@@ -4,6 +4,10 @@ This changelog follows [Keep a Changelog v1.0.0](https://keepachangelog.com/en/1
 
 ## Unreleased
 
+### Changed
+
+* Bump up Errorprone to version 2.3.2
+
 ## v0.1.3 - 2018-10-10
 
 ### Fixed

@@ -14,6 +14,10 @@ This changelog follows [Keep a Changelog v1.0.0](https://keepachangelog.com/en/1
 
 * False positive around logging method that has no parameter
 
+### Changed
+
+* Use JDK9 to build, because Errorprone has stopped support for JDK8
+
 ## v0.1.2 - 2018-07-06
 
 ### Fixed

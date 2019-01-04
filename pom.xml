@@ -59,6 +59,10 @@
           <compilerArgs>
             <!-- workaround to avoid the bug in errorprone https://github.com/google/error-prone/issues/780#issuecomment-357952383 -->
             <arg>-Xep:ParameterName:OFF</arg>
+            <arg>--add-exports</arg>
+            <arg>jdk.compiler/com.sun.tools.javac.code=jp.skypencil.errorprone.slf4j</arg>
+            <arg>--add-exports</arg>
+            <arg>jdk.compiler/com.sun.tools.javac.util=jp.skypencil.errorprone.slf4j</arg>
           </compilerArgs>
         </configuration>
         <dependencies>

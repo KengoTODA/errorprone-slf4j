@@ -18,6 +18,7 @@ Current version supports following bug patterns:
 * [Slf4jLoggerShouldBeNonStatic](https://github.com/KengoTODA/findbugs-slf4j#slf4j_logger_should_be_non_static)
 * [Slf4jIllegalPassedClass](https://github.com/KengoTODA/findbugs-slf4j#slf4j_illegal_passed_class)
 * [Slf4jSignOnlyFormat](https://github.com/KengoTODA/findbugs-slf4j#slf4j_sign_only_format)
+* [Slf4jDoNotLogMessageOfExceptionExplicitly](https://github.com/KengoTODA/findbugs-slf4j#slf4j_manually_provided_message)
 
 ## Install
 

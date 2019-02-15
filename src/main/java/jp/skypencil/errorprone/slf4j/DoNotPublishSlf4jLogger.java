@@ -12,7 +12,6 @@ import com.google.errorprone.VisitorState;
 import com.google.errorprone.bugpatterns.BugChecker;
 import com.google.errorprone.bugpatterns.BugChecker.VariableTreeMatcher;
 import com.google.errorprone.fixes.SuggestedFix;
-import com.google.errorprone.fixes.SuggestedFix.Builder;
 import com.google.errorprone.fixes.SuggestedFixes;
 import com.google.errorprone.matchers.Description;
 import com.google.errorprone.matchers.Matcher;
@@ -35,7 +34,7 @@ public class DoNotPublishSlf4jLogger extends BugChecker implements VariableTreeM
   @Override
   public Description matchVariable(VariableTree tree, VisitorState state) {
     if (allOf(isField(), SLF4J_LOGGER, not(PRIVATE)).matches(tree, state)) {
-      Builder builder = SuggestedFix.builder();
+      SuggestedFix.Builder builder = SuggestedFix.builder();
       SuggestedFixes.addModifiers(tree, state, Modifier.PRIVATE).ifPresent(builder::merge);
       SuggestedFixes.removeModifiers(tree, state, Modifier.PUBLIC, Modifier.PROTECTED)
           .ifPresent(builder::merge);

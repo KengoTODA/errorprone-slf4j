@@ -13,7 +13,7 @@
     <maven.compiler.source>9</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <version.slf4j>1.8.0-beta4</version.slf4j>
-    <version.errorprone>2.3.2</version.errorprone>
+    <version.errorprone>2.3.3</version.errorprone>
   </properties>
   <scm>
     <connection>scm:git:git@github.com:KengoTODA/errorprone-slf4j.git</connection>

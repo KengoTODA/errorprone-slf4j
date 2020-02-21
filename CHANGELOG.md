@@ -2,7 +2,7 @@
 
 This changelog follows [Keep a Changelog v1.0.0](https://keepachangelog.com/en/1.0.0/).
 
-## Unreleased
+## v0.1.4 - 2020-02-21
 
 ### Added
 
@@ -10,7 +10,7 @@ This changelog follows [Keep a Changelog v1.0.0](https://keepachangelog.com/en/1
 
 ### Changed
 
-* Bump up Errorprone to version 2.3.2
+* Bump up Errorprone to version 2.3.4
 
 ## v0.1.3 - 2018-10-10
 

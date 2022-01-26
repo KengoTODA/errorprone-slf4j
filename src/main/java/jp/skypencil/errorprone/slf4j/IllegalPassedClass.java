@@ -4,7 +4,6 @@ import static com.google.errorprone.BugPattern.SeverityLevel.WARNING;
 
 import com.google.auto.service.AutoService;
 import com.google.errorprone.BugPattern;
-import com.google.errorprone.BugPattern.ProvidesFix;
 import com.google.errorprone.VisitorState;
 import com.google.errorprone.bugpatterns.BugChecker;
 import com.google.errorprone.bugpatterns.BugChecker.MethodInvocationTreeMatcher;
@@ -33,8 +32,7 @@ import javax.lang.model.element.Modifier;
     name = "Slf4jIllegalPassedClass",
     summary = "LoggerFactory.getLogger(Class) should get the class that defines variable",
     tags = {"SLF4J"},
-    severity = WARNING,
-    providesFix = ProvidesFix.REQUIRES_HUMAN_ATTENTION)
+    severity = WARNING)
 @AutoService(BugChecker.class)
 public class IllegalPassedClass extends BugChecker implements MethodInvocationTreeMatcher {
 

@@ -13,7 +13,7 @@
     <maven.compiler.source>9</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <version.slf4j>2.0.0-alpha6</version.slf4j>
-    <version.errorprone>2.10.0</version.errorprone>
+    <version.errorprone>2.11.0</version.errorprone>
   </properties>
   <scm>
     <connection>scm:git:git@github.com:KengoTODA/errorprone-slf4j.git</connection>
@@ -50,29 +50,38 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.1</version>
         <configuration>
-          <compilerId>javac-with-errorprone</compilerId>
           <source>9</source>
           <target>9</target>
           <encoding>${project.build.sourceEncoding}</encoding>
           <forceJavacCompilerUse>true</forceJavacCompilerUse>
           <showWarnings>true</showWarnings>
           <compilerArgs>
-            <!-- workaround to avoid the bug in errorprone https://github.com/google/error-prone/issues/780#issuecomment-357952383 -->
-            <arg>-Xep:ParameterName:OFF</arg>
+            <arg>-XDcompilePolicy=simple</arg>
+            <arg>
+              -Xplugin:ErrorProne
+              <!-- workaround to avoid the bug in errorprone https://github.com/google/error-prone/issues/780#issuecomment-357952383 -->
+              -Xep:ParameterName:OFF
+            </arg>
+            <arg>--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED</arg>
+            <arg>--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED</arg>
+            <arg>--add-exports=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
+            <arg>--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
+            <arg>--add-exports=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg>
+            <arg>--add-exports=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED</arg>
+            <arg>--add-exports=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED</arg>
+            <arg>--add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED</arg>
+            <arg>--add-exports=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
+            <arg>--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</arg>
+            <arg>--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
           </compilerArgs>
+          <annotationProcessorPaths>
+            <path>
+              <groupId>com.google.errorprone</groupId>
+              <artifactId>error_prone_core</artifactId>
+              <version>${version.errorprone}</version>
+            </path>
+          </annotationProcessorPaths>
         </configuration>
-        <dependencies>
-          <dependency>
-            <groupId>org.codehaus.plexus</groupId>
-            <artifactId>plexus-compiler-javac-errorprone</artifactId>
-            <version>2.9.0</version>
-          </dependency>
-          <dependency>
-            <groupId>com.google.errorprone</groupId>
-            <artifactId>error_prone_core</artifactId>
-            <version>${version.errorprone}</version>
-          </dependency>
-        </dependencies>
       </plugin>
       <plugin>
         <artifactId>maven-resources-plugin</artifactId>

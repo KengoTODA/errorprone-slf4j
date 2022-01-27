@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>jp.skypencil.errorprone.slf4j</groupId>
   <artifactId>errorprone-slf4j</artifactId>
-  <version>0.1.5</version>
+  <version>0.1.6-SNAPSHOT</version>
   <url>https://github.com/KengoTODA/errorprone-slf4j</url>
   <description>Error Prone plugin for SLF4J</description>
   <packaging>jar</packaging>

@@ -14,5 +14,6 @@ jobs:
           java-version: '11'
           cache: 'maven'
       - run: |
-          mvn -v
-          mvn org.jacoco:jacoco-maven-plugin:prepare-agent verify sonar:sonar -B
+          mvn org.jacoco:jacoco-maven-plugin:prepare-agent verify ${SONAR_TOKEN:+sonar:sonar} -B -V
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

@@ -3,7 +3,7 @@
 This is a plugin for [Google Error Prone](http://errorprone.info/), that detects misusage of [SLF4J](https://www.slf4j.org/).
 This provides almost same feature with [findbugs-slf4j](https://github.com/KengoTODA/findbugs-slf4j).
 
-[![build](https://github.com/KengoTODA/errorprone-slf4/actions/workflows/build.yml/badge.svg)](https://github.com/KengoTODA/errorprone-slf4/actions/workflows/build.yml)
+[![.github/workflows/build.yml](https://github.com/KengoTODA/errorprone-slf4j/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/KengoTODA/errorprone-slf4j/actions/workflows/build.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=jp.skypencil.errorprone.slf4j%3Aerrorprone-slf4j&metric=alert_status)](https://sonarcloud.io/dashboard?id=jp.skypencil.errorprone.slf4j%3Aerrorprone-slf4j)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/jp.skypencil.errorprone.slf4j/errorprone-slf4j/badge.svg)](https://maven-badges.herokuapp.com/maven-central/jp.skypencil.errorprone.slf4j/errorprone-slf4j)
 

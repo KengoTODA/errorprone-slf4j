@@ -7,7 +7,6 @@ import static com.google.errorprone.matchers.Matchers.not;
 
 import com.google.auto.service.AutoService;
 import com.google.errorprone.BugPattern;
-import com.google.errorprone.BugPattern.ProvidesFix;
 import com.google.errorprone.VisitorState;
 import com.google.errorprone.bugpatterns.BugChecker;
 import com.google.errorprone.bugpatterns.BugChecker.VariableTreeMatcher;
@@ -21,8 +20,7 @@ import javax.lang.model.element.Modifier;
     name = "Slf4jLoggerShouldBeFinal",
     summary = "Logger field should be final",
     tags = {"SLF4J"},
-    severity = WARNING,
-    providesFix = ProvidesFix.REQUIRES_HUMAN_ATTENTION)
+    severity = WARNING)
 @AutoService(BugChecker.class)
 public class PreferFinalSlf4jLogger extends BugChecker implements VariableTreeMatcher {
   private static final long serialVersionUID = -5127926153475887075L;

@@ -46,7 +46,7 @@ public class FormatShouldBeConst extends BugChecker implements MethodInvocationT
     String message =
         String.format(
             "SLF4J logging format should be constant value, but it is \'%s\'",
-            tree.getArguments().get(formatIndex));
+            state.getSourceForNode(tree.getArguments().get(formatIndex)));
     return Description.builder(
             tree,
             "Slf4jFormatShouldBeConst",

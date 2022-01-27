@@ -33,13 +33,12 @@ After [installation of Error Prone](https://errorprone.info/docs/installation), 
   <groupId>org.apache.maven.plugins</groupId>
   <artifactId>maven-compiler-plugin</artifactId>
   <configuration>
-    <compilerId>javac-with-errorprone</compilerId>
     ...
     <annotationProcessorPaths>
       <path>
         <groupId>jp.skypencil.errorprone.slf4j</groupId>
         <artifactId>errorprone-slf4j</artifactId>
-        <version>0.1.3</version>
+        <version>0.1.4</version>
       </path>
     </annotationProcessorPaths>
   </configuration>
@@ -52,13 +51,13 @@ From v4.6, [Gradle supports `annotationProcessor` configuration](https://docs.gr
 
 ```groovy
 dependencies {
-  annotationProcessor 'jp.skypencil.errorprone.slf4j:errorprone-slf4j:0.1.2'
+  annotationProcessor 'jp.skypencil.errorprone.slf4j:errorprone-slf4j:0.1.4'
 }
 ```
 
 ## Copyright
 
-Copyright 2012-2018 Kengo TODA
+Copyright 2012-2022 Kengo TODA
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

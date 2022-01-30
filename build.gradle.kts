@@ -12,6 +12,7 @@ plugins {
     id("org.sonarqube") version "3.3"
 }
 
+group = "jp.skypencil.errorprone.slf4j"
 val autoServiceVersion = "1.0.1"
 val errorproneVersion = "2.11.0"
 

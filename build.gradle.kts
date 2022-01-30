@@ -59,8 +59,8 @@ val createJavadocOptionFile by tasks.registering {
 }
 tasks {
     withType<JavaCompile> {
-        sourceCompatibility = "11"
-        targetCompatibility = "11"
+        sourceCompatibility = "9"
+        targetCompatibility = "9"
         options.compilerArgs.addAll(exportsArgs)
         options.errorprone.disableWarningsInGeneratedCode.set(true)
     }

@@ -15,8 +15,6 @@ plugins {
 val autoServiceVersion = "1.0.1"
 val errorproneVersion = "2.11.0"
 
-group = "jp.skypencil.errorprone.slf4j"
-
 repositories {
     mavenCentral()
 }
@@ -142,9 +140,6 @@ publishing {
                 issueManagement {
                     system.set("GitHub Issues")
                     url.set("https://github.com/KengoTODA/errorprone-slf4j/issues")
-                }
-                distributionManagement {
-
                 }
             }
         }

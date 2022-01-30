@@ -1,0 +1,33 @@
+{
+  "name": "errorprone-slf4j",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KengoTODA/errorprone-slf4j.git"
+  },
+  "author": "Kengo TODA",
+  "bugs": {
+    "url": "https://github.com/KengoTODA/errorprone-slf4j/issues"
+  },
+  "engines": {
+    "node": "^16.13.2"
+  },
+  "homepage": "https://github.com/KengoTODA/errorprone-slf4j#readme",
+  "devDependencies": {
+    "@semantic-release/github": "^8.0.2",
+    "gradle-semantic-release-plugin": "^1.6.4",
+    "semantic-release": "^19.0.2"
+  },
+  "release": {
+    "branches": ["master"],
+    "plugins": [
+      "gradle-semantic-release-plugin",
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      ["@semantic-release/github", {
+        "assets": [
+          {"path": "build/libs/*.jar"}
+        ]
+      }]
+    ]
+  }
+}

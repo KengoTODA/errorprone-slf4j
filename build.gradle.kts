@@ -56,12 +56,27 @@ val jacocoTestReport = tasks.jacocoTestReport {
         xml.required.set(true)
     }
 }
+val addExportsFile = file("$buildDir/tmp/javadoc/add-exports.txt")
+val createJavadocOptionFile by tasks.registering {
+    outputs.file(addExportsFile)
+    doLast {
+        addExportsFile.printWriter().use { writer ->
+            exportsArgs.chunked(2).forEach {
+                writer.println("${it[0]}=${it[1]}")
+            }
+        }
+    }
+}
 tasks {
     withType<JavaCompile> {
         sourceCompatibility = "11"
         targetCompatibility = "11"
         options.compilerArgs.addAll(exportsArgs)
         options.errorprone.disableWarningsInGeneratedCode.set(true)
+    }
+    withType<Javadoc> {
+        dependsOn(createJavadocOptionFile)
+        options.optionFiles(addExportsFile)
     }
     withType<SonarQubeTask> {
         dependsOn(jacocoTestReport)
@@ -79,6 +94,8 @@ java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(11))
     }
+    withSourcesJar()
+    withJavadocJar()
 }
 
 spotless {

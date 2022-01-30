@@ -6,6 +6,7 @@ This provides almost same feature with [findbugs-slf4j](https://github.com/Kengo
 [![.github/workflows/build.yml](https://github.com/KengoTODA/errorprone-slf4j/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/KengoTODA/errorprone-slf4j/actions/workflows/build.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=jp.skypencil.errorprone.slf4j%3Aerrorprone-slf4j&metric=alert_status)](https://sonarcloud.io/dashboard?id=jp.skypencil.errorprone.slf4j%3Aerrorprone-slf4j)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/jp.skypencil.errorprone.slf4j/errorprone-slf4j/badge.svg)](https://maven-badges.herokuapp.com/maven-central/jp.skypencil.errorprone.slf4j/errorprone-slf4j)
+[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
 ## Supported Bug Patterns
 

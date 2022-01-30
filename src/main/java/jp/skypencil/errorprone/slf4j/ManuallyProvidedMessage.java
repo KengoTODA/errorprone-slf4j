@@ -44,8 +44,7 @@ public class ManuallyProvidedMessage extends BugChecker implements MethodInvocat
       return Description.NO_MATCH;
     }
     Optional<JCFieldAccess> problem =
-        tree.getArguments()
-            .stream()
+        tree.getArguments().stream()
             .filter(arg -> arg.getClass().isAssignableFrom(JCMethodInvocation.class))
             .map(JCMethodInvocation.class::cast)
             .map(arg -> arg.meth)

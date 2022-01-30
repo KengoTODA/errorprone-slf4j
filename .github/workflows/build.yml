@@ -7,7 +7,6 @@ permissions:
   checks: write # for SonarQube
   contents: write # for semantic-release/github
   issues: write # fir semantic-release/github
-  metadata: read # for SonarQube
   statuses: read # for SonarQube
   pull-requests: write # for SonarQube and semantic-release/github
 

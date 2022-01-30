@@ -15,8 +15,7 @@ class Consts {
           .onDescendantOf("org.slf4j.Logger")
           .withNameMatching(
               Pattern.compile(
-                  Consts.TARGET_METHOD_NAMES
-                      .stream()
+                  Consts.TARGET_METHOD_NAMES.stream()
                       .map(Object::toString)
                       .collect(Collectors.joining("|"))));
 

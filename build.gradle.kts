@@ -24,7 +24,7 @@ dependencies {
     compileOnly("com.google.auto.service:auto-service:$autoServiceVersion")
     compileOnly("com.google.errorprone:error_prone_check_api:$errorproneVersion")
     errorprone("com.google.errorprone:error_prone_core:$errorproneVersion")
-    testImplementation("junit:junit:4.13")
+    testImplementation("junit:junit:4.13.2")
     testImplementation("org.slf4j:slf4j-api:2.0.0-alpha6")
     testImplementation("com.google.errorprone:error_prone_check_api:$errorproneVersion")
     testImplementation("com.google.errorprone:error_prone_test_helpers:$errorproneVersion")

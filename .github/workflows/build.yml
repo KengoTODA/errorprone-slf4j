@@ -13,7 +13,7 @@ jobs:
         with:
           distribution: 'microsoft'
           java-version: '11'
-          cache: 'maven'
+          cache: 'gradle'
       - run: |
           ./gradlew build --no-daemon
         env:

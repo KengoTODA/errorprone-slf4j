@@ -25,7 +25,7 @@ spotless {
         googleJavaFormat()
     }
     kotlinGradle {
-        target("**/*.gradle.kts")
+        target("build.gradle.kts")
         ktlint()
         indentWithSpaces()
     }

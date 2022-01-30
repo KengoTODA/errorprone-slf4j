@@ -6,27 +6,16 @@ plugins {
     `java-library`
     `maven-publish`
     `signing`
-    id("com.diffplug.spotless") version "6.2.0"
-    id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
-    id("net.ltgt.errorprone") version "2.0.2"
-    id("org.sonarqube") version "3.3"
+    `conventions`
 }
 
 group = "jp.skypencil.errorprone.slf4j"
-val autoServiceVersion = "1.0.1"
+
 val errorproneVersion = "2.11.0"
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
-    annotationProcessor("com.google.auto.service:auto-service:$autoServiceVersion")
-    compileOnly("com.google.auto.service:auto-service:$autoServiceVersion")
     compileOnly("com.google.errorprone:error_prone_check_api:$errorproneVersion")
     errorprone("com.google.errorprone:error_prone_core:$errorproneVersion")
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("org.slf4j:slf4j-api:2.0.0-alpha6")
     testImplementation("com.google.errorprone:error_prone_check_api:$errorproneVersion")
     testImplementation("com.google.errorprone:error_prone_test_helpers:$errorproneVersion")
 }
@@ -97,26 +86,6 @@ java {
     }
     withSourcesJar()
     withJavadocJar()
-}
-
-spotless {
-    java {
-        removeUnusedImports()
-        googleJavaFormat()
-    }
-    kotlinGradle {
-        target("**/*.gradle.kts")
-        ktlint()
-        indentWithSpaces()
-    }
-}
-
-sonarqube {
-    properties {
-        property("sonar.host.url", "https://sonarcloud.io")
-        property("sonar.projectKey", "jp.skypencil.errorprone.slf4j:errorprone-slf4j")
-        property("sonar.organization", "kengotoda-github")
-    }
 }
 
 nexusPublishing {

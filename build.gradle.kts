@@ -57,6 +57,10 @@ val createJavadocOptionFile by tasks.registering {
         }
     }
 }
+
+val signingKey: String? by project
+val signingPassword: String? by project
+
 tasks {
     withType<JavaCompile> {
         sourceCompatibility = "9"
@@ -67,6 +71,11 @@ tasks {
     withType<Javadoc> {
         dependsOn(createJavadocOptionFile)
         options.optionFiles(addExportsFile)
+    }
+    withType<Sign> {
+        onlyIf {
+            signingKey.isNullOrEmpty().not() && signingPassword.isNullOrEmpty().not()
+        }
     }
     withType<SonarQubeTask> {
         dependsOn(jacocoTestReport)
@@ -132,4 +141,9 @@ publishing {
             }
         }
     }
+}
+
+signing {
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign(publishing.publications["mavenJava"])
 }

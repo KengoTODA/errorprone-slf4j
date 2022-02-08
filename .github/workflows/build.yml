@@ -28,7 +28,7 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
       - run: |
-          ./gradlew spotlessCheck build ${SONAR_TOKEN:+sonarqube}
+          ./gradlew build ${SONAR_TOKEN:+sonarqube}
           npm ci
           npx semantic-release
         env:
@@ -36,6 +36,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ORG_GRADLE_PROJECT_sonatypeUsername: eller86
           ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.SIGNING_KEY }}
+          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
       - uses: actions/upload-artifact@v2
         if: failure()
         with:

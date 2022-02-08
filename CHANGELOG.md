@@ -4,6 +4,12 @@ This changelog follows [Keep a Changelog v1.0.0](https://keepachangelog.com/en/1
 
 ## Unreleased
 
+## v0.1.6 - 2022-02-08
+
+### Fixed
+
+* Recover missing `META-INF/services` directory ([#147](https://github.com/KengoTODA/errorprone-slf4j/issues/147))
+
 ## v0.1.5 - 2022-01-27
 
 ### Changed

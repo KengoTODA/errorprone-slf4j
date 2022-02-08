@@ -103,6 +103,7 @@ publishing {
                 artifactId = "errorprone-slf4j"
                 name.set("Error Prone SLF4J")
                 description.set("Error Prone plugin for SLF4J")
+                url.set("https://github.com/KengoTODA/errorprone-slf4j")
                 inceptionYear.set("2018")
                 licenses {
                     license {

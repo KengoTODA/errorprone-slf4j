@@ -39,7 +39,7 @@ jobs:
           path: build/reports
   sonarqube:
     runs-on: ubuntu-latest
-    if: secrets.SONAR_TOKEN != ""
+    if: ${{ secrets.SONAR_TOKEN != "" }}
     steps:
       - uses: actions/checkout@v2
         with:

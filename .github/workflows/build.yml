@@ -10,9 +10,6 @@ permissions:
   statuses: read # for SonarQube
   pull-requests: write # for SonarQube and semantic-release/github
 
-env:
-  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -42,7 +39,7 @@ jobs:
           path: build/reports
   sonarqube:
     runs-on: ubuntu-latest
-    if: $SONAR_TOKEN != ""
+    if: secrets.SONAR_TOKEN != ""
     steps:
       - uses: actions/checkout@v2
         with:
@@ -56,5 +53,6 @@ jobs:
           ./gradlew build sonarqube
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           ORG_GRADLE_PROJECT_sonatypeUsername: eller86
           ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PASSWORD }}

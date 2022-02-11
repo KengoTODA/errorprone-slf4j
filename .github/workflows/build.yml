@@ -10,13 +10,14 @@ permissions:
   statuses: read # for SonarQube
   pull-requests: write # for SonarQube and semantic-release/github
 
+env:
+  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
       - uses: gradle/wrapper-validation-action@v1
       - uses: actions/setup-java@v2
         with:
@@ -28,14 +29,10 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
       - run: |
-          ./gradlew build sign ${SONAR_TOKEN:+sonarqube}
           npm ci
           npx semantic-release
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ORG_GRADLE_PROJECT_sonatypeUsername: eller86
-          ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PASSWORD }}
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.SIGNING_KEY }}
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.SIGNING_PASSWORD }}
       - uses: actions/upload-artifact@v2
@@ -43,3 +40,21 @@ jobs:
         with:
           name: reports
           path: build/reports
+  sonarqube:
+    runs-on: ubuntu-latest
+    if: $SONAR_TOKEN != ""
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'microsoft'
+          java-version: '11'
+          cache: 'gradle'
+      - run: |
+          ./gradlew build sonarqube
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ORG_GRADLE_PROJECT_sonatypeUsername: eller86
+          ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PASSWORD }}

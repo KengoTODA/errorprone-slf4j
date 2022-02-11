@@ -4,6 +4,7 @@ import static com.google.errorprone.BugPattern.SeverityLevel.WARNING;
 
 import com.google.auto.service.AutoService;
 import com.google.errorprone.BugPattern;
+import com.google.errorprone.ErrorProneVersion;
 import com.google.errorprone.VisitorState;
 import com.google.errorprone.bugpatterns.BugChecker;
 import com.google.errorprone.bugpatterns.BugChecker.MethodInvocationTreeMatcher;
@@ -97,7 +98,7 @@ public class IllegalPassedClass extends BugChecker implements MethodInvocationTr
       extends TreeScanner<TypeSymbol, VisitorState> {
     @Override
     public TypeSymbol visitMethodInvocation(MethodInvocationTree node, VisitorState state) {
-      if (!isGetLogger.matches(node, state)) {
+      if (!MatherHolder.isGetLogger.matches(node, state)) {
         return null;
       }
 
@@ -106,8 +107,31 @@ public class IllegalPassedClass extends BugChecker implements MethodInvocationTr
       Type typeParameter = type.getTypeArguments().get(0);
       return typeParameter.asElement();
     }
+  }
 
-    private final Matcher<ExpressionTree> isGetLogger =
+  static final class MatherHolder {
+    static {
+      boolean supported =
+          ErrorProneVersion.loadVersionFromPom()
+              .transform(MatherHolder::checkSupportedVersion)
+              .or(true);
+      if (!supported) {
+        throw new IllegalStateException("Run this rule with Errorprone 2.11.0 or later.");
+      }
+    }
+
+    static boolean checkSupportedVersion(String version) {
+      String[] split = version.split("\\.", 3);
+      int major = Integer.parseInt(split[0], 10);
+      if (major > 2) {
+        // assuming this version uses new API definition
+        return true;
+      }
+      int minor = Integer.parseInt(split[1], 10);
+      return minor >= 11;
+    }
+
+    static Matcher<ExpressionTree> isGetLogger =
         MethodMatchers.staticMethod()
             .onClass("org.slf4j.LoggerFactory")
             .named("getLogger")

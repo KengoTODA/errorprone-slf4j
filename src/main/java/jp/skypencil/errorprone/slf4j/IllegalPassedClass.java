@@ -109,6 +109,16 @@ public class IllegalPassedClass extends BugChecker implements MethodInvocationTr
     }
   }
 
+  /**
+   * Apply the initialization-on-demand holder idiom to check the version of Errorprone only when we
+   * use the matcher which depends on new API definition from {@code 2.11.0}.
+   *
+   * @see <a href="https://github.com/google/error-prone/issues/2909">GitHub Issue about the API
+   *     change on the Errorprone side</a>
+   * @see <a
+   *     href="https://en.wikipedia.org/wiki/Initialization-on-demand_holder_idiom">Initialization-on-demand
+   *     holder idiom (Wikipedia)</a>
+   */
   static final class MatherHolder {
     static {
       boolean supported =

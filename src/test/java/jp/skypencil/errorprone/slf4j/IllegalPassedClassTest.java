@@ -1,5 +1,8 @@
 package jp.skypencil.errorprone.slf4j;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import com.google.errorprone.BugCheckerRefactoringTestHelper;
 import com.google.errorprone.BugCheckerRefactoringTestHelper.FixChoosers;
 import com.google.errorprone.BugCheckerRefactoringTestHelper.TestMode;
@@ -9,6 +12,13 @@ import java.io.IOException;
 import org.junit.Test;
 
 public class IllegalPassedClassTest {
+  @Test
+  public void testSupportedVersion() {
+    assertTrue(IllegalPassedClass.MatherHolder.checkSupportedVersion("3.0.0"));
+    assertTrue(IllegalPassedClass.MatherHolder.checkSupportedVersion("2.11.0"));
+    assertFalse(IllegalPassedClass.MatherHolder.checkSupportedVersion("2.10.0"));
+  }
+
   @Test
   public void testRefactoringInstanceField() throws IOException {
     BugChecker checker = new IllegalPassedClass();

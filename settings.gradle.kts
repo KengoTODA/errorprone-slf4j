@@ -1,4 +1,4 @@
-plugins { id("com.gradle.enterprise") version "3.8.1" }
+plugins { id("com.gradle.enterprise") version "3.9" }
 
 rootProject.name = "errorprone-slf4j"
 

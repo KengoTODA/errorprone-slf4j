@@ -51,4 +51,26 @@ public class FormatShouldBeConstTest {
                 + "}")
         .doTest();
   }
+
+  @Test
+  public void testTernaryInStaticBlock() {
+    helper
+        .addSourceLines(
+            "TernaryInStaticBlock.java",
+            "import org.slf4j.Logger;\n"
+                + "import org.slf4j.LoggerFactory;\n"
+                + "\n"
+                + "public class TernaryInStaticBlock {\n"
+                + "   public static boolean DEBUG = false;\n"
+                + "   public static final boolean DEBUG_FINAL = false;\n"
+                + "   private static final Logger logger = LoggerFactory.getLogger(TernaryInStaticBlock.class);\n"
+                + "\n"
+                + "   static {\n"
+                + "     // BUG: Diagnostic contains: SLF4J logging format should be constant value, but it is '\"Debug mode \" + (DEBUG ? \"enabled.\" : \"disabled.\")'\n"
+                + "     logger.info(\"Debug mode \" + (DEBUG ? \"enabled.\" : \"disabled.\"));\n"
+                + "     logger.info(\"Debug mode \" + (DEBUG_FINAL ? \"enabled.\" : \"disabled.\"));\n"
+                + "   }\n"
+                + "}\n")
+        .doTest();
+  }
 }

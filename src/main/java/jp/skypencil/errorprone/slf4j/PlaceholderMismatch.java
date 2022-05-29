@@ -6,6 +6,7 @@ import static com.google.errorprone.matchers.Matchers.isSubtypeOf;
 import com.google.auto.service.AutoService;
 import com.google.errorprone.BugPattern;
 import com.google.errorprone.VisitorState;
+import com.google.errorprone.BugPattern.LinkType;
 import com.google.errorprone.bugpatterns.BugChecker;
 import com.google.errorprone.bugpatterns.BugChecker.MethodInvocationTreeMatcher;
 import com.google.errorprone.matchers.Description;
@@ -20,6 +21,8 @@ import java.util.regex.Pattern;
     name = "Slf4jPlaceholderMismatch",
     summary = "Count of placeholder does not match with count of parameter",
     tags = {"SLF4J"},
+    link = "https://github.com/KengoTODA/findbugs-slf4j#slf4j_place_holder_mismatch",
+    linkType = LinkType.CUSTOM,
     severity = ERROR)
 @AutoService(BugChecker.class)
 public class PlaceholderMismatch extends BugChecker implements MethodInvocationTreeMatcher {

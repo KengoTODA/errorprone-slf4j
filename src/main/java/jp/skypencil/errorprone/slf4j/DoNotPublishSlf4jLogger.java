@@ -8,6 +8,7 @@ import static com.google.errorprone.matchers.Matchers.not;
 import com.google.auto.service.AutoService;
 import com.google.errorprone.BugPattern;
 import com.google.errorprone.VisitorState;
+import com.google.errorprone.BugPattern.LinkType;
 import com.google.errorprone.bugpatterns.BugChecker;
 import com.google.errorprone.bugpatterns.BugChecker.VariableTreeMatcher;
 import com.google.errorprone.fixes.SuggestedFix;
@@ -21,6 +22,8 @@ import javax.lang.model.element.Modifier;
     name = "Slf4jLoggerShouldBePrivate",
     summary = "Do not publish Logger field, it should be private",
     tags = {"SLF4J"},
+    link = "https://github.com/KengoTODA/findbugs-slf4j#slf4j_logger_should_be_private",
+    linkType = LinkType.CUSTOM,
     severity = WARNING)
 @AutoService(BugChecker.class)
 public class DoNotPublishSlf4jLogger extends BugChecker implements VariableTreeMatcher {

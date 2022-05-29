@@ -6,6 +6,7 @@ import com.google.auto.service.AutoService;
 import com.google.errorprone.BugPattern;
 import com.google.errorprone.ErrorProneVersion;
 import com.google.errorprone.VisitorState;
+import com.google.errorprone.BugPattern.LinkType;
 import com.google.errorprone.bugpatterns.BugChecker;
 import com.google.errorprone.bugpatterns.BugChecker.MethodInvocationTreeMatcher;
 import com.google.errorprone.fixes.SuggestedFix;
@@ -33,6 +34,8 @@ import javax.lang.model.element.Modifier;
     name = "Slf4jIllegalPassedClass",
     summary = "LoggerFactory.getLogger(Class) should get the class that defines variable",
     tags = {"SLF4J"},
+    link = "https://github.com/KengoTODA/findbugs-slf4j#slf4j_illegal_passed_class",
+    linkType = LinkType.CUSTOM,
     severity = WARNING)
 @AutoService(BugChecker.class)
 public class IllegalPassedClass extends BugChecker implements MethodInvocationTreeMatcher {

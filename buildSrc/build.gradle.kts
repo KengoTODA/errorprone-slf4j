@@ -9,7 +9,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.diffplug.spotless:spotless-plugin-gradle:6.7.2")
+    implementation("com.diffplug.spotless:spotless-plugin-gradle:6.9.0")
     implementation("io.github.gradle-nexus:publish-plugin:1.1.0")
     implementation("net.ltgt.gradle:gradle-errorprone-plugin:2.0.2")
     implementation("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.4.0.2513")

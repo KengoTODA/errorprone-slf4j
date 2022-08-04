@@ -11,7 +11,7 @@ plugins {
 
 group = "jp.skypencil.errorprone.slf4j"
 
-val errorproneVersion = "2.14.0"
+val errorproneVersion = "2.15.0"
 
 dependencies {
     compileOnly("com.google.errorprone:error_prone_check_api:$errorproneVersion")

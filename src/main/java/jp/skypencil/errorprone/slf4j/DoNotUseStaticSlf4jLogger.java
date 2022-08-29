@@ -9,6 +9,7 @@ import com.google.auto.service.AutoService;
 import com.google.common.base.CaseFormat;
 import com.google.errorprone.BugPattern;
 import com.google.errorprone.VisitorState;
+import com.google.errorprone.BugPattern.LinkType;
 import com.google.errorprone.bugpatterns.BugChecker;
 import com.google.errorprone.bugpatterns.BugChecker.VariableTreeMatcher;
 import com.google.errorprone.fixes.SuggestedFix;
@@ -24,6 +25,8 @@ import javax.lang.model.element.Modifier;
     name = "Slf4jLoggerShouldBeNonStatic",
     summary = "Do not use static Logger field, use non-static one instead",
     tags = {"SLF4J"},
+    link = "https://github.com/KengoTODA/findbugs-slf4j#slf4j_logger_should_be_non_static",
+    linkType = LinkType.CUSTOM,
     severity = SUGGESTION)
 @AutoService(BugChecker.class)
 public class DoNotUseStaticSlf4jLogger extends BugChecker implements VariableTreeMatcher {

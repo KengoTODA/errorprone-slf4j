@@ -5,6 +5,7 @@ import static com.google.errorprone.BugPattern.SeverityLevel.ERROR;
 import com.google.auto.service.AutoService;
 import com.google.errorprone.BugPattern;
 import com.google.errorprone.VisitorState;
+import com.google.errorprone.BugPattern.LinkType;
 import com.google.errorprone.bugpatterns.BugChecker;
 import com.google.errorprone.bugpatterns.BugChecker.MethodInvocationTreeMatcher;
 import com.google.errorprone.matchers.CompileTimeConstantExpressionMatcher;
@@ -18,6 +19,8 @@ import com.sun.tools.javac.util.List;
     name = "Slf4jFormatShouldBeConst",
     summary = "Format of SLF4J logging should be constant value",
     tags = {"SLF4J"},
+    link = "https://github.com/KengoTODA/findbugs-slf4j#slf4j_format_should_be_const",
+    linkType = LinkType.CUSTOM,
     severity = ERROR)
 @AutoService(BugChecker.class)
 public class FormatShouldBeConst extends BugChecker implements MethodInvocationTreeMatcher {

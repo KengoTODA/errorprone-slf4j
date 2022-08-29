@@ -5,6 +5,7 @@ import static com.google.errorprone.BugPattern.SeverityLevel.ERROR;
 import com.google.auto.service.AutoService;
 import com.google.errorprone.BugPattern;
 import com.google.errorprone.VisitorState;
+import com.google.errorprone.BugPattern.LinkType;
 import com.google.errorprone.bugpatterns.BugChecker;
 import com.google.errorprone.bugpatterns.BugChecker.MethodInvocationTreeMatcher;
 import com.google.errorprone.matchers.Description;
@@ -21,6 +22,8 @@ import java.util.function.Predicate;
     summary =
         "Do not log message returned from Throwable#getMessage and Throwable#getLocalizedMessage",
     tags = {"SLF4J"},
+    link = "https://github.com/KengoTODA/findbugs-slf4j#slf4j_manually_provided_message",
+    linkType = LinkType.CUSTOM,
     severity = ERROR)
 @AutoService(BugChecker.class)
 public class ManuallyProvidedMessage extends BugChecker implements MethodInvocationTreeMatcher {

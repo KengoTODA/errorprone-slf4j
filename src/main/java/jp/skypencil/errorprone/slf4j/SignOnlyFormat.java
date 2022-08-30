@@ -8,9 +8,9 @@ import com.google.errorprone.BugPattern.LinkType;
 import com.google.errorprone.VisitorState;
 import com.google.errorprone.bugpatterns.BugChecker;
 import com.google.errorprone.bugpatterns.BugChecker.MethodInvocationTreeMatcher;
-import com.google.errorprone.matchers.CompileTimeConstantExpressionMatcher;
 import com.google.errorprone.matchers.Description;
 import com.google.errorprone.util.ASTHelpers;
+import com.sun.source.tree.ExpressionTree;
 import com.sun.source.tree.MethodInvocationTree;
 import com.sun.tools.javac.code.Symbol.VarSymbol;
 import com.sun.tools.javac.util.List;
@@ -26,9 +26,6 @@ import com.sun.tools.javac.util.List;
 public class SignOnlyFormat extends BugChecker implements MethodInvocationTreeMatcher {
   private static final long serialVersionUID = 3271269614137732880L;
 
-  private static final CompileTimeConstantExpressionMatcher IS_CONST =
-      new CompileTimeConstantExpressionMatcher();
-
   @Override
   public Description matchMethodInvocation(MethodInvocationTree tree, VisitorState state) {
     if (!Consts.IS_LOGGING_METHOD.matches(tree, state)) {
@@ -42,11 +39,12 @@ public class SignOnlyFormat extends BugChecker implements MethodInvocationTreeMa
             ? 1
             : 0;
 
-    if (!IS_CONST.matches(tree.getArguments().get(formatIndex), state)) {
+    ExpressionTree expression = tree.getArguments().get(formatIndex);
+    Object constValue = ASTHelpers.constValue(expression);
+    if (constValue == null) {
       return Description.NO_MATCH;
     }
-
-    String format = ASTHelpers.constValue(tree.getArguments().get(formatIndex)).toString();
+    String format = constValue.toString();
     if (verifyFormat(format)) {
       return Description.NO_MATCH;
     }

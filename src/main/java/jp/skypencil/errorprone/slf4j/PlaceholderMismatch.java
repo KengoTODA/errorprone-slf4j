@@ -5,8 +5,8 @@ import static com.google.errorprone.matchers.Matchers.isSubtypeOf;
 
 import com.google.auto.service.AutoService;
 import com.google.errorprone.BugPattern;
-import com.google.errorprone.VisitorState;
 import com.google.errorprone.BugPattern.LinkType;
+import com.google.errorprone.VisitorState;
 import com.google.errorprone.bugpatterns.BugChecker;
 import com.google.errorprone.bugpatterns.BugChecker.MethodInvocationTreeMatcher;
 import com.google.errorprone.matchers.Description;

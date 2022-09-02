@@ -9,9 +9,7 @@ import com.google.errorprone.VisitorState;
 import com.google.errorprone.bugpatterns.BugChecker;
 import com.google.errorprone.bugpatterns.BugChecker.MethodInvocationTreeMatcher;
 import com.google.errorprone.matchers.Description;
-import com.google.errorprone.util.ASTHelpers;
 import com.sun.source.tree.MethodInvocationTree;
-import com.sun.tools.javac.code.Symbol;
 import com.sun.tools.javac.tree.JCTree.JCFieldAccess;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import java.util.Optional;
@@ -35,17 +33,10 @@ public class ManuallyProvidedMessage extends BugChecker implements MethodInvocat
 
   @Override
   public Description matchMethodInvocation(MethodInvocationTree tree, VisitorState state) {
-    Symbol method = ASTHelpers.getSymbol(tree.getMethodSelect());
-    String methodStr = method.toString();
-    String methodName = methodStr.substring(0, methodStr.indexOf('('));
-    if (!Consts.TARGET_METHOD_NAMES.contains(methodName)) {
+    if (!Consts.IS_LOGGING_METHOD.matches(tree, state)) {
       return Description.NO_MATCH;
     }
 
-    Symbol clazz = method.enclClass();
-    if (!"org.slf4j.Logger".equals(clazz.toString())) {
-      return Description.NO_MATCH;
-    }
     Optional<JCFieldAccess> problem =
         tree.getArguments().stream()
             .filter(arg -> arg.getClass().isAssignableFrom(JCMethodInvocation.class))

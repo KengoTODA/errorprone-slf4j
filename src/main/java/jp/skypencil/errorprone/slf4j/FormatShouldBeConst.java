@@ -1,6 +1,7 @@
 package jp.skypencil.errorprone.slf4j;
 
 import static com.google.errorprone.BugPattern.SeverityLevel.ERROR;
+import static jp.skypencil.errorprone.slf4j.Consts.IS_MARKER;
 
 import com.google.auto.service.AutoService;
 import com.google.errorprone.BugPattern;
@@ -12,8 +13,6 @@ import com.google.errorprone.matchers.Description;
 import com.google.errorprone.util.ASTHelpers;
 import com.sun.source.tree.ExpressionTree;
 import com.sun.source.tree.MethodInvocationTree;
-import com.sun.tools.javac.code.Symbol.VarSymbol;
-import com.sun.tools.javac.util.List;
 
 @BugPattern(
     name = "Slf4jFormatShouldBeConst",
@@ -32,12 +31,7 @@ public class FormatShouldBeConst extends BugChecker implements MethodInvocationT
       return Description.NO_MATCH;
     }
 
-    List<VarSymbol> parameters = ASTHelpers.getSymbol(tree).getParameters();
-    int formatIndex =
-        ASTHelpers.isSubtype(
-                parameters.get(0).type, state.getTypeFromString("org.slf4j.Marker"), state)
-            ? 1
-            : 0;
+    int formatIndex = IS_MARKER.matches(tree.getArguments().get(0), state) ? 1 : 0;
 
     ExpressionTree expression = tree.getArguments().get(formatIndex);
     Object constValue = ASTHelpers.constValue(expression);

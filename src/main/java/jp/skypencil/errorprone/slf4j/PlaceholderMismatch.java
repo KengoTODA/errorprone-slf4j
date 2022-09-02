@@ -2,6 +2,7 @@ package jp.skypencil.errorprone.slf4j;
 
 import static com.google.errorprone.BugPattern.SeverityLevel.ERROR;
 import static com.google.errorprone.matchers.Matchers.isSubtypeOf;
+import static jp.skypencil.errorprone.slf4j.Consts.IS_MARKER;
 
 import com.google.auto.service.AutoService;
 import com.google.errorprone.BugPattern;
@@ -13,7 +14,6 @@ import com.google.errorprone.matchers.Description;
 import com.google.errorprone.util.ASTHelpers;
 import com.sun.source.tree.ExpressionTree;
 import com.sun.source.tree.MethodInvocationTree;
-import com.sun.tools.javac.code.Symbol;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,15 +32,7 @@ public class PlaceholderMismatch extends BugChecker implements MethodInvocationT
 
   @Override
   public Description matchMethodInvocation(MethodInvocationTree tree, VisitorState state) {
-    Symbol method = ASTHelpers.getSymbol(tree.getMethodSelect());
-    String methodStr = method.toString();
-    String methodName = methodStr.substring(0, methodStr.indexOf('('));
-    if (!Consts.TARGET_METHOD_NAMES.contains(methodName)) {
-      return Description.NO_MATCH;
-    }
-
-    Symbol clazz = method.enclClass();
-    if (!"org.slf4j.Logger".equals(clazz.toString())) {
+    if (!Consts.IS_LOGGING_METHOD.matches(tree, state)) {
       return Description.NO_MATCH;
     }
 
@@ -81,13 +73,10 @@ public class PlaceholderMismatch extends BugChecker implements MethodInvocationT
     return Description.NO_MATCH;
   }
 
-  private static final com.google.errorprone.matchers.Matcher<ExpressionTree> IS_MARKER =
-      isSubtypeOf("org.slf4j.Marker");
-
   private static final com.google.errorprone.matchers.Matcher<ExpressionTree> IS_THROWABLE =
       isSubtypeOf("java.lang.Throwable");
 
-  int countPlaceholder(String format) {
+  private static int countPlaceholder(String format) {
     Matcher matcher = PLACEHOLDER_PATTERN.matcher(format);
     int count = 0;
     while (matcher.find()) {

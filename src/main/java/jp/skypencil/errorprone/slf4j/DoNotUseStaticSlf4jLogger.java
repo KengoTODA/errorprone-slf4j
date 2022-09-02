@@ -4,6 +4,7 @@ import static com.google.errorprone.BugPattern.SeverityLevel.SUGGESTION;
 import static com.google.errorprone.matchers.Matchers.allOf;
 import static com.google.errorprone.matchers.Matchers.isField;
 import static com.google.errorprone.matchers.Matchers.isStatic;
+import static jp.skypencil.errorprone.slf4j.Consts.SLF4J_LOGGER;
 
 import com.google.auto.service.AutoService;
 import com.google.common.base.CaseFormat;
@@ -16,7 +17,6 @@ import com.google.errorprone.fixes.SuggestedFix;
 import com.google.errorprone.fixes.SuggestedFix.Builder;
 import com.google.errorprone.fixes.SuggestedFixes;
 import com.google.errorprone.matchers.Description;
-import com.google.errorprone.matchers.Matcher;
 import com.sun.source.tree.VariableTree;
 import java.util.Optional;
 import javax.lang.model.element.Modifier;
@@ -31,7 +31,6 @@ import javax.lang.model.element.Modifier;
 @AutoService(BugChecker.class)
 public class DoNotUseStaticSlf4jLogger extends BugChecker implements VariableTreeMatcher {
   private static final long serialVersionUID = 2656759159827947106L;
-  private static final Matcher<VariableTree> SLF4J_LOGGER = new LoggerMatcher();
 
   @Override
   public Description matchVariable(VariableTree tree, VisitorState state) {
@@ -52,7 +51,7 @@ public class DoNotUseStaticSlf4jLogger extends BugChecker implements VariableTre
     return Description.NO_MATCH;
   }
 
-  private Optional<SuggestedFix> suggestRename(VariableTree tree, VisitorState state) {
+  private static Optional<SuggestedFix> suggestRename(VariableTree tree, VisitorState state) {
     String name = tree.getName().toString();
     String formatted = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, name);
     if (name.equals(formatted)) {

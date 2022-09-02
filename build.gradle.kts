@@ -63,8 +63,8 @@ val signingPassword: String? by project
 
 tasks {
     withType<JavaCompile> {
-        sourceCompatibility = "9"
-        targetCompatibility = "9"
+        sourceCompatibility = "11"
+        targetCompatibility = "11"
         options.compilerArgs.addAll(exportsArgs)
         options.errorprone.disableWarningsInGeneratedCode.set(true)
     }

@@ -50,6 +50,12 @@ public class IllegalPassedClass extends BugChecker implements MethodInvocationTr
     }
 
     List<ClassSymbol> enclosingClasses = listEnclosingClasses(state);
+    for (ClassSymbol enclosingSymbol : enclosingClasses) {
+      if (ASTHelpers.isSameType(type.type, enclosingSymbol.type, state)) {
+        return Description.NO_MATCH;
+      }
+    }
+
     String message =
         String.format(
             "LoggerFactory.getLogger(Class) should get one of [%s] but it gets %s",
@@ -63,11 +69,6 @@ public class IllegalPassedClass extends BugChecker implements MethodInvocationTr
             WARNING,
             message);
 
-    for (ClassSymbol enclosingSymbol : enclosingClasses) {
-      if (ASTHelpers.isSameType(type.type, enclosingSymbol.type, state)) {
-        return Description.NO_MATCH;
-      }
-    }
     VariableTree variableTree = state.findEnclosing(VariableTree.class);
     if (variableTree != null && !variableTree.getModifiers().getFlags().contains(Modifier.STATIC)) {
       builder.addFix(
@@ -82,7 +83,7 @@ public class IllegalPassedClass extends BugChecker implements MethodInvocationTr
     return builder.build();
   }
 
-  private List<ClassSymbol> listEnclosingClasses(VisitorState state) {
+  private static List<ClassSymbol> listEnclosingClasses(VisitorState state) {
     ClassTree enclosing = state.findEnclosing(ClassTree.class);
     if (enclosing == null) {
       return Collections.emptyList();

@@ -2,8 +2,10 @@ package jp.skypencil.errorprone.slf4j;
 
 import static com.google.errorprone.BugPattern.SeverityLevel.WARNING;
 import static com.google.errorprone.matchers.Matchers.allOf;
+import static com.google.errorprone.matchers.Matchers.hasModifier;
 import static com.google.errorprone.matchers.Matchers.isField;
 import static com.google.errorprone.matchers.Matchers.not;
+import static jp.skypencil.errorprone.slf4j.Consts.SLF4J_LOGGER;
 
 import com.google.auto.service.AutoService;
 import com.google.errorprone.BugPattern;
@@ -14,7 +16,6 @@ import com.google.errorprone.bugpatterns.BugChecker.VariableTreeMatcher;
 import com.google.errorprone.fixes.SuggestedFix;
 import com.google.errorprone.fixes.SuggestedFixes;
 import com.google.errorprone.matchers.Description;
-import com.google.errorprone.matchers.Matcher;
 import com.sun.source.tree.VariableTree;
 import javax.lang.model.element.Modifier;
 
@@ -29,12 +30,9 @@ import javax.lang.model.element.Modifier;
 public class DoNotPublishSlf4jLogger extends BugChecker implements VariableTreeMatcher {
   private static final long serialVersionUID = 3718668951312958622L;
 
-  private static final Matcher<VariableTree> PRIVATE = new PrivateMatcher();
-  private static final Matcher<VariableTree> SLF4J_LOGGER = new LoggerMatcher();
-
   @Override
   public Description matchVariable(VariableTree tree, VisitorState state) {
-    if (allOf(isField(), SLF4J_LOGGER, not(PRIVATE)).matches(tree, state)) {
+    if (allOf(isField(), SLF4J_LOGGER, not(hasModifier(Modifier.PRIVATE))).matches(tree, state)) {
       SuggestedFix.Builder builder = SuggestedFix.builder();
       SuggestedFixes.addModifiers(tree, state, Modifier.PRIVATE).ifPresent(builder::merge);
       SuggestedFixes.removeModifiers(tree, state, Modifier.PUBLIC, Modifier.PROTECTED)
@@ -49,14 +47,5 @@ public class DoNotPublishSlf4jLogger extends BugChecker implements VariableTreeM
           .build();
     }
     return Description.NO_MATCH;
-  }
-
-  private static final class PrivateMatcher implements Matcher<VariableTree> {
-    private static final long serialVersionUID = 4297995943793097263L;
-
-    @Override
-    public boolean matches(VariableTree tree, VisitorState state) {
-      return tree.getModifiers().getFlags().contains(Modifier.PRIVATE);
-    }
   }
 }

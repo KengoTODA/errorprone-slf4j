@@ -2,8 +2,10 @@ package jp.skypencil.errorprone.slf4j;
 
 import static com.google.errorprone.BugPattern.SeverityLevel.WARNING;
 import static com.google.errorprone.matchers.Matchers.allOf;
+import static com.google.errorprone.matchers.Matchers.hasModifier;
 import static com.google.errorprone.matchers.Matchers.isField;
 import static com.google.errorprone.matchers.Matchers.not;
+import static jp.skypencil.errorprone.slf4j.Consts.SLF4J_LOGGER;
 
 import com.google.auto.service.AutoService;
 import com.google.errorprone.BugPattern;
@@ -13,7 +15,6 @@ import com.google.errorprone.bugpatterns.BugChecker;
 import com.google.errorprone.bugpatterns.BugChecker.VariableTreeMatcher;
 import com.google.errorprone.fixes.SuggestedFixes;
 import com.google.errorprone.matchers.Description;
-import com.google.errorprone.matchers.Matcher;
 import com.sun.source.tree.VariableTree;
 import javax.lang.model.element.Modifier;
 
@@ -27,12 +28,10 @@ import javax.lang.model.element.Modifier;
 @AutoService(BugChecker.class)
 public class PreferFinalSlf4jLogger extends BugChecker implements VariableTreeMatcher {
   private static final long serialVersionUID = -5127926153475887075L;
-  private static final Matcher<VariableTree> FINAL = new FinalMatcher();
-  private static final Matcher<VariableTree> SLF4J_LOGGER = new LoggerMatcher();
 
   @Override
   public Description matchVariable(VariableTree tree, VisitorState state) {
-    if (allOf(isField(), SLF4J_LOGGER, not(FINAL)).matches(tree, state)) {
+    if (allOf(isField(), SLF4J_LOGGER, not(hasModifier(Modifier.FINAL))).matches(tree, state)) {
       return Description.builder(
               tree,
               "Slf4jLoggerShouldBeFinal",
@@ -43,14 +42,5 @@ public class PreferFinalSlf4jLogger extends BugChecker implements VariableTreeMa
           .build();
     }
     return Description.NO_MATCH;
-  }
-
-  private static final class FinalMatcher implements Matcher<VariableTree> {
-    private static final long serialVersionUID = -8036242499062168842L;
-
-    @Override
-    public boolean matches(VariableTree tree, VisitorState state) {
-      return tree.getModifiers().getFlags().contains(Modifier.FINAL);
-    }
   }
 }

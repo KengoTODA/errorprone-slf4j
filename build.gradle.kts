@@ -1,3 +1,4 @@
+import net.ltgt.gradle.errorprone.CheckSeverity
 import net.ltgt.gradle.errorprone.errorprone
 import org.sonarqube.gradle.SonarQubeTask
 
@@ -67,6 +68,16 @@ tasks {
         targetCompatibility = "11"
         options.compilerArgs.addAll(exportsArgs)
         options.errorprone.disableWarningsInGeneratedCode.set(true)
+
+        // enforce general checks
+        options.errorprone.check("BadImport", CheckSeverity.ERROR)
+        options.errorprone.check("MixedMutabilityReturnType", CheckSeverity.ERROR)
+
+        // enforce errorprone-specific checks
+        options.errorprone.check("MemoizeConstantVisitorStateLookups", CheckSeverity.ERROR)
+        options.errorprone.check("ASTHelpersSuggestions", CheckSeverity.ERROR)
+        // our bugpattern classes use custom names
+        options.errorprone.check("BugPatternNaming", CheckSeverity.OFF)
     }
     withType<Javadoc> {
         dependsOn(createJavadocOptionFile)

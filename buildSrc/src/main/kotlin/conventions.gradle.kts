@@ -31,7 +31,7 @@ spotless {
     }
 }
 
-sonarqube {
+sonar {
     properties {
         property("sonar.host.url", "https://sonarcloud.io")
         property("sonar.projectKey", "jp.skypencil.errorprone.slf4j:errorprone-slf4j")

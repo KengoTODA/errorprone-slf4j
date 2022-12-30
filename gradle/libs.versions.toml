@@ -1,0 +1,10 @@
+[versions]
+errorprone = "2.16"
+
+[libraries]
+errorprone-check-api = { module = "com.google.errorprone:error_prone_check_api", version.ref = "errorprone" }
+errorprone-core = { module = "com.google.errorprone:error_prone_core", version.ref = "errorprone" }
+errorprone-test-helpers = { module = "com.google.errorprone:error_prone_test_helpers", version.ref = "errorprone" }
+
+[plugins]
+spotless = { id = "com.diffplug.spotless", version = "6.12.0" }

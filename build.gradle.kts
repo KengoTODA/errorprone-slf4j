@@ -11,13 +11,11 @@ plugins {
 
 group = "jp.skypencil.errorprone.slf4j"
 
-val errorproneVersion = "2.16"
-
 dependencies {
-    compileOnly("com.google.errorprone:error_prone_check_api:$errorproneVersion")
-    errorprone("com.google.errorprone:error_prone_core:$errorproneVersion")
-    testImplementation("com.google.errorprone:error_prone_check_api:$errorproneVersion")
-    testImplementation("com.google.errorprone:error_prone_test_helpers:$errorproneVersion")
+    compileOnly(libs.errorprone.check.api)
+    errorprone(libs.errorprone.core)
+    testImplementation(libs.errorprone.check.api)
+    testImplementation(libs.errorprone.test.helpers)
 }
 
 val exportsArgs = listOf(

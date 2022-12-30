@@ -1,5 +1,5 @@
 import net.ltgt.gradle.errorprone.errorprone
-import org.sonarqube.gradle.SonarQubeTask
+import org.sonarqube.gradle.SonarTask
 
 plugins {
     `jacoco`
@@ -75,7 +75,7 @@ tasks {
             signingKey.isNullOrEmpty().not() && signingPassword.isNullOrEmpty().not()
         }
     }
-    withType<SonarQubeTask> {
+    withType<SonarTask> {
         dependsOn(jacocoTestReport)
     }
     check {

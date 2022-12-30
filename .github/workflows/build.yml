@@ -28,7 +28,7 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
       - run: |
-          ./gradlew build ${SONAR_TOKEN:+sonarqube}
+          ./gradlew build ${SONAR_TOKEN:+sonar}
           rm build/libs/*.jar
           npm ci
           npx semantic-release

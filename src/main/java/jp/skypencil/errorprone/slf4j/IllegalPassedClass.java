@@ -3,6 +3,7 @@ package jp.skypencil.errorprone.slf4j;
 import static com.google.errorprone.BugPattern.SeverityLevel.WARNING;
 
 import com.google.auto.service.AutoService;
+import com.google.common.collect.ImmutableList;
 import com.google.errorprone.BugPattern;
 import com.google.errorprone.BugPattern.LinkType;
 import com.google.errorprone.ErrorProneVersion;
@@ -11,7 +12,6 @@ import com.google.errorprone.bugpatterns.BugChecker;
 import com.google.errorprone.bugpatterns.BugChecker.MethodInvocationTreeMatcher;
 import com.google.errorprone.fixes.SuggestedFix;
 import com.google.errorprone.matchers.Description;
-import com.google.errorprone.matchers.Description.Builder;
 import com.google.errorprone.matchers.Matcher;
 import com.google.errorprone.matchers.method.MethodMatchers;
 import com.google.errorprone.util.ASTHelpers;
@@ -25,7 +25,6 @@ import com.sun.tools.javac.code.Symbol.TypeSymbol;
 import com.sun.tools.javac.code.Type;
 import com.sun.tools.javac.code.Type.ClassType;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.lang.model.element.Modifier;
@@ -49,7 +48,7 @@ public class IllegalPassedClass extends BugChecker implements MethodInvocationTr
       return Description.NO_MATCH;
     }
 
-    List<ClassSymbol> enclosingClasses = listEnclosingClasses(state);
+    ImmutableList<ClassSymbol> enclosingClasses = listEnclosingClasses(state);
     for (ClassSymbol enclosingSymbol : enclosingClasses) {
       if (ASTHelpers.isSameType(type.type, enclosingSymbol.type, state)) {
         return Description.NO_MATCH;
@@ -61,7 +60,7 @@ public class IllegalPassedClass extends BugChecker implements MethodInvocationTr
             "LoggerFactory.getLogger(Class) should get one of [%s] but it gets %s",
             enclosingClasses.stream().map(ClassSymbol::className).collect(Collectors.joining(",")),
             type.getSimpleName());
-    Builder builder =
+    Description.Builder builder =
         Description.builder(
             tree,
             "Slf4jIllegalPassedClass",
@@ -83,10 +82,10 @@ public class IllegalPassedClass extends BugChecker implements MethodInvocationTr
     return builder.build();
   }
 
-  private static List<ClassSymbol> listEnclosingClasses(VisitorState state) {
+  private static ImmutableList<ClassSymbol> listEnclosingClasses(VisitorState state) {
     ClassTree enclosing = state.findEnclosing(ClassTree.class);
     if (enclosing == null) {
-      return Collections.emptyList();
+      return ImmutableList.of();
     }
 
     List<ClassSymbol> result = new ArrayList<>();
@@ -95,7 +94,7 @@ public class IllegalPassedClass extends BugChecker implements MethodInvocationTr
       result.add(enclosingSymbol);
       enclosingSymbol = ASTHelpers.enclosingClass(enclosingSymbol);
     }
-    return result;
+    return ImmutableList.copyOf(result);
   }
 
   private static final class LoggerInitializerVisitor

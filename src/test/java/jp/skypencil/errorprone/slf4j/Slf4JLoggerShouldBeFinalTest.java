@@ -6,10 +6,10 @@ import com.google.errorprone.bugpatterns.BugChecker;
 import java.io.IOException;
 import org.junit.Test;
 
-public class PreferFinalSlf4jLoggerTest {
+public class Slf4JLoggerShouldBeFinalTest {
   @Test
   public void testRefactoringStaticLogger() throws IOException {
-    BugChecker checker = new PreferFinalSlf4jLogger();
+    BugChecker checker = new Slf4jLoggerShouldBeFinal();
     BugCheckerRefactoringTestHelper helper =
         BugCheckerRefactoringTestHelper.newInstance(checker, getClass());
     helper

@@ -30,14 +30,14 @@ import java.util.stream.Collectors;
 import javax.lang.model.element.Modifier;
 
 @BugPattern(
-    name = "Slf4jIllegalPassedClass",
+    altNames = {"IllegalPassedClass"},
     summary = "LoggerFactory.getLogger(Class) should get the class that defines variable",
     tags = {"SLF4J"},
     link = "https://github.com/KengoTODA/findbugs-slf4j#slf4j_illegal_passed_class",
     linkType = LinkType.CUSTOM,
     severity = WARNING)
 @AutoService(BugChecker.class)
-public class IllegalPassedClass extends BugChecker implements MethodInvocationTreeMatcher {
+public class Slf4jIllegalPassedClass extends BugChecker implements MethodInvocationTreeMatcher {
 
   private static final long serialVersionUID = 8309704818374164342L;
 
@@ -60,13 +60,7 @@ public class IllegalPassedClass extends BugChecker implements MethodInvocationTr
             "LoggerFactory.getLogger(Class) should get one of [%s] but it gets %s",
             enclosingClasses.stream().map(ClassSymbol::className).collect(Collectors.joining(",")),
             type.getSimpleName());
-    Description.Builder builder =
-        Description.builder(
-            tree,
-            "Slf4jIllegalPassedClass",
-            "https://github.com/KengoTODA/findbugs-slf4j#slf4j_illegal_passed_class",
-            WARNING,
-            message);
+    Description.Builder builder = buildDescription(tree).setMessage(message);
 
     VariableTree variableTree = state.findEnclosing(VariableTree.class);
     if (variableTree != null && !variableTree.getModifiers().getFlags().contains(Modifier.STATIC)) {

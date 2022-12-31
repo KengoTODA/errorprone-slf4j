@@ -16,7 +16,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 @BugPattern(
-    name = "Slf4jDoNotLogMessageOfExceptionExplicitly",
+    altNames = {"ManuallyProvidedMessage"},
     summary =
         "Do not log message returned from Throwable#getMessage and Throwable#getLocalizedMessage",
     tags = {"SLF4J"},
@@ -24,7 +24,8 @@ import java.util.function.Predicate;
     linkType = LinkType.CUSTOM,
     severity = ERROR)
 @AutoService(BugChecker.class)
-public class ManuallyProvidedMessage extends BugChecker implements MethodInvocationTreeMatcher {
+public class Slf4jDoNotLogMessageOfExceptionExplicitly extends BugChecker
+    implements MethodInvocationTreeMatcher {
 
   private static final long serialVersionUID = 7903613628689308557L;
   private static final Predicate<String> MESSAGE_GETTER = "getMessage"::equals;
@@ -49,11 +50,8 @@ public class ManuallyProvidedMessage extends BugChecker implements MethodInvocat
             .filter(meth -> THROWABLE.test(meth.sym.owner.toString()))
             .findFirst();
     if (problem.isPresent()) {
-      return Description.builder(
-              tree,
-              "Slf4jDoNotLogMessageOfExceptionExplicitly",
-              "https://github.com/KengoTODA/findbugs-slf4j#slf4j_manually_provided_message",
-              ERROR,
+      return buildDescription(tree)
+          .setMessage(
               "Do not log message returned from Throwable#getMessage and Throwable#getLocalizedMessage. It is enough to provide throwable instance as the last argument, then binding will log its message.")
           .build();
     }

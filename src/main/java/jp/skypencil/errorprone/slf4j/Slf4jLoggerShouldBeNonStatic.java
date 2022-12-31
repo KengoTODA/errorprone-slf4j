@@ -21,14 +21,14 @@ import java.util.Optional;
 import javax.lang.model.element.Modifier;
 
 @BugPattern(
-    name = "Slf4jLoggerShouldBeNonStatic",
+    altNames = {"DoNotUseStaticSlf4jLogger"},
     summary = "Do not use static Logger field, use non-static one instead",
     tags = {"SLF4J"},
     link = "https://github.com/KengoTODA/findbugs-slf4j#slf4j_logger_should_be_non_static",
     linkType = LinkType.CUSTOM,
     severity = SUGGESTION)
 @AutoService(BugChecker.class)
-public class DoNotUseStaticSlf4jLogger extends BugChecker implements VariableTreeMatcher {
+public class Slf4jLoggerShouldBeNonStatic extends BugChecker implements VariableTreeMatcher {
   private static final long serialVersionUID = 2656759159827947106L;
 
   @Override
@@ -38,14 +38,7 @@ public class DoNotUseStaticSlf4jLogger extends BugChecker implements VariableTre
       SuggestedFixes.removeModifiers(tree, state, Modifier.STATIC).ifPresent(builder::merge);
       suggestRename(tree, state).ifPresent(builder::merge);
 
-      return Description.builder(
-              tree,
-              "Slf4jLoggerShouldBeNonStatic",
-              "https://github.com/KengoTODA/findbugs-slf4j#slf4j_logger_should_be_non_static",
-              SUGGESTION,
-              "Do not use static Logger field, use non-static one instead")
-          .addFix(builder.build())
-          .build();
+      return buildDescription(tree).addFix(builder.build()).build();
     }
     return Description.NO_MATCH;
   }

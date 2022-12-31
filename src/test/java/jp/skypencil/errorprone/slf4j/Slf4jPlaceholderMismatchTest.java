@@ -7,12 +7,12 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 @RunWith(JUnit4.class)
-public class PlaceholderMismatchTest {
+public class Slf4jPlaceholderMismatchTest {
   private CompilationTestHelper helper;
 
   @Before
   public void setup() {
-    helper = CompilationTestHelper.newInstance(PlaceholderMismatch.class, getClass());
+    helper = CompilationTestHelper.newInstance(Slf4jPlaceholderMismatch.class, getClass());
   }
 
   @Test
@@ -36,7 +36,7 @@ public class PlaceholderMismatchTest {
   @Test
   public void testMarker() {
     CompilationTestHelper helper =
-        CompilationTestHelper.newInstance(PlaceholderMismatch.class, getClass());
+        CompilationTestHelper.newInstance(Slf4jPlaceholderMismatch.class, getClass());
     helper
         .addSourceLines(
             "WithMarker.java",
@@ -59,7 +59,7 @@ public class PlaceholderMismatchTest {
   @Test
   public void testThrowable() {
     CompilationTestHelper helper =
-        CompilationTestHelper.newInstance(PlaceholderMismatch.class, getClass());
+        CompilationTestHelper.newInstance(Slf4jPlaceholderMismatch.class, getClass());
     helper
         .addSourceLines(
             "WithThrowable.java",
@@ -79,7 +79,7 @@ public class PlaceholderMismatchTest {
   @Test
   public void testTooManyPlaceholders() {
     CompilationTestHelper helper =
-        CompilationTestHelper.newInstance(PlaceholderMismatch.class, getClass());
+        CompilationTestHelper.newInstance(Slf4jPlaceholderMismatch.class, getClass());
     helper
         .addSourceLines(
             "TooManyPlaceholders.java",
@@ -99,7 +99,7 @@ public class PlaceholderMismatchTest {
   @Test
   public void testTooManyParams() {
     CompilationTestHelper helper =
-        CompilationTestHelper.newInstance(PlaceholderMismatch.class, getClass());
+        CompilationTestHelper.newInstance(Slf4jPlaceholderMismatch.class, getClass());
     helper
         .addSourceLines(
             "TooManyParams.java",
@@ -119,7 +119,7 @@ public class PlaceholderMismatchTest {
   @Test
   public void testVarArg() {
     CompilationTestHelper helper =
-        CompilationTestHelper.newInstance(PlaceholderMismatch.class, getClass());
+        CompilationTestHelper.newInstance(Slf4jPlaceholderMismatch.class, getClass());
     helper
         .addSourceLines(
             "VarArg.java",
@@ -139,7 +139,7 @@ public class PlaceholderMismatchTest {
   @Test
   public void testVarArgWithException() {
     CompilationTestHelper helper =
-        CompilationTestHelper.newInstance(PlaceholderMismatch.class, getClass());
+        CompilationTestHelper.newInstance(Slf4jPlaceholderMismatch.class, getClass());
     helper
         .addSourceLines(
             "VarArg.java",
@@ -159,7 +159,7 @@ public class PlaceholderMismatchTest {
   @Test
   public void testNoParams() {
     CompilationTestHelper helper =
-        CompilationTestHelper.newInstance(PlaceholderMismatch.class, getClass());
+        CompilationTestHelper.newInstance(Slf4jPlaceholderMismatch.class, getClass());
     helper
         .addSourceLines(
             "NoParam.java",

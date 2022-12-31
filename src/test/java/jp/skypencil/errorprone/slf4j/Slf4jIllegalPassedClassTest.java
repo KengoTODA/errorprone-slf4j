@@ -11,17 +11,17 @@ import com.google.errorprone.bugpatterns.BugChecker;
 import java.io.IOException;
 import org.junit.Test;
 
-public class IllegalPassedClassTest {
+public class Slf4jIllegalPassedClassTest {
   @Test
   public void testSupportedVersion() {
-    assertTrue(IllegalPassedClass.MatherHolder.checkSupportedVersion("3.0.0"));
-    assertTrue(IllegalPassedClass.MatherHolder.checkSupportedVersion("2.11.0"));
-    assertFalse(IllegalPassedClass.MatherHolder.checkSupportedVersion("2.10.0"));
+    assertTrue(Slf4jIllegalPassedClass.MatherHolder.checkSupportedVersion("3.0.0"));
+    assertTrue(Slf4jIllegalPassedClass.MatherHolder.checkSupportedVersion("2.11.0"));
+    assertFalse(Slf4jIllegalPassedClass.MatherHolder.checkSupportedVersion("2.10.0"));
   }
 
   @Test
   public void testRefactoringInstanceField() throws IOException {
-    BugChecker checker = new IllegalPassedClass();
+    BugChecker checker = new Slf4jIllegalPassedClass();
     BugCheckerRefactoringTestHelper helper =
         BugCheckerRefactoringTestHelper.newInstance(checker, getClass());
     helper
@@ -47,7 +47,7 @@ public class IllegalPassedClassTest {
 
   @Test
   public void testRefactoringStaticField() throws IOException {
-    BugChecker checker = new IllegalPassedClass();
+    BugChecker checker = new Slf4jIllegalPassedClass();
     BugCheckerRefactoringTestHelper helper =
         BugCheckerRefactoringTestHelper.newInstance(checker, getClass());
     helper
@@ -73,7 +73,7 @@ public class IllegalPassedClassTest {
 
   @Test
   public void test2ndFixForInstanceField() throws IOException {
-    BugChecker checker = new IllegalPassedClass();
+    BugChecker checker = new Slf4jIllegalPassedClass();
     BugCheckerRefactoringTestHelper helper =
         BugCheckerRefactoringTestHelper.newInstance(checker, getClass())
             .setFixChooser(FixChoosers.SECOND);
@@ -100,7 +100,7 @@ public class IllegalPassedClassTest {
 
   @Test
   public void testRefactoringInnerClass() throws IOException {
-    BugChecker checker = new IllegalPassedClass();
+    BugChecker checker = new Slf4jIllegalPassedClass();
     BugCheckerRefactoringTestHelper helper =
         BugCheckerRefactoringTestHelper.newInstance(checker, getClass())
             .setFixChooser(FixChoosers.SECOND);
@@ -131,7 +131,7 @@ public class IllegalPassedClassTest {
 
   @Test
   public void testRefactoringInnerClass2() throws IOException {
-    BugChecker checker = new IllegalPassedClass();
+    BugChecker checker = new Slf4jIllegalPassedClass();
     BugCheckerRefactoringTestHelper helper =
         BugCheckerRefactoringTestHelper.newInstance(checker, getClass())
             .setFixChooser(FixChoosers.FIRST);
@@ -163,7 +163,7 @@ public class IllegalPassedClassTest {
   @Test
   public void testOtherField() throws IOException {
     CompilationTestHelper helper =
-        CompilationTestHelper.newInstance(IllegalPassedClass.class, getClass());
+        CompilationTestHelper.newInstance(Slf4jIllegalPassedClass.class, getClass());
     helper
         .addSourceLines(
             "WithLoggerFactory.java",
@@ -183,7 +183,7 @@ public class IllegalPassedClassTest {
   @Test
   public void testClassWithoutProblem() throws IOException {
     CompilationTestHelper helper =
-        CompilationTestHelper.newInstance(IllegalPassedClass.class, getClass());
+        CompilationTestHelper.newInstance(Slf4jIllegalPassedClass.class, getClass());
     helper
         .addSourceLines(
             "PrivateLogger.java",
@@ -200,7 +200,7 @@ public class IllegalPassedClassTest {
   @Test
   public void testInnerClassWithoutProblem() throws IOException {
     CompilationTestHelper helper =
-        CompilationTestHelper.newInstance(IllegalPassedClass.class, getClass());
+        CompilationTestHelper.newInstance(Slf4jIllegalPassedClass.class, getClass());
     helper
         .addSourceLines(
             "PrivateLogger.java",
@@ -220,7 +220,7 @@ public class IllegalPassedClassTest {
   @Test
   public void testMethodParameter() throws IOException {
     CompilationTestHelper helper =
-        CompilationTestHelper.newInstance(IllegalPassedClass.class, getClass());
+        CompilationTestHelper.newInstance(Slf4jIllegalPassedClass.class, getClass());
     helper
         .addSourceLines(
             "PrivateLogger.java",

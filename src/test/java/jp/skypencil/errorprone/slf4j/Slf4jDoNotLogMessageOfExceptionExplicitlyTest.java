@@ -4,11 +4,12 @@ import com.google.errorprone.CompilationTestHelper;
 import java.io.IOException;
 import org.junit.Test;
 
-public class ManuallyProvidedMessageTest {
+public class Slf4jDoNotLogMessageOfExceptionExplicitlyTest {
   @Test
   public void test() throws IOException {
     CompilationTestHelper helper =
-        CompilationTestHelper.newInstance(ManuallyProvidedMessage.class, getClass());
+        CompilationTestHelper.newInstance(
+            Slf4jDoNotLogMessageOfExceptionExplicitly.class, getClass());
     helper
         .addSourceLines(
             "WithManualMessage.java",

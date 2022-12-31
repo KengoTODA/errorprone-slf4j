@@ -18,14 +18,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @BugPattern(
-    name = "Slf4jPlaceholderMismatch",
+    altNames = {"PlaceholderMismatch"},
     summary = "Count of placeholder does not match with count of parameter",
     tags = {"SLF4J"},
     link = "https://github.com/KengoTODA/findbugs-slf4j#slf4j_place_holder_mismatch",
     linkType = LinkType.CUSTOM,
     severity = ERROR)
 @AutoService(BugChecker.class)
-public class PlaceholderMismatch extends BugChecker implements MethodInvocationTreeMatcher {
+public class Slf4jPlaceholderMismatch extends BugChecker implements MethodInvocationTreeMatcher {
 
   private static final long serialVersionUID = 1442638758364703416L;
   private static final Pattern PLACEHOLDER_PATTERN = Pattern.compile("(.?)(\\\\\\\\)*\\{\\}");
@@ -62,13 +62,7 @@ public class PlaceholderMismatch extends BugChecker implements MethodInvocationT
           String.format(
               "Count of placeholder (%d) does not match with count of parameter (%d)",
               placeholders, argumentSize);
-      return Description.builder(
-              tree,
-              "Slf4jPlaceholderMismatch",
-              "https://github.com/KengoTODA/findbugs-slf4j#slf4j_place_holder_mismatch",
-              ERROR,
-              message)
-          .build();
+      return buildDescription(tree).setMessage(message).build();
     }
     return Description.NO_MATCH;
   }

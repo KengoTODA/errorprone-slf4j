@@ -74,8 +74,7 @@ tasks {
         // enforce errorprone-specific checks
         options.errorprone.check("MemoizeConstantVisitorStateLookups", CheckSeverity.ERROR)
         options.errorprone.check("ASTHelpersSuggestions", CheckSeverity.ERROR)
-        // our bugpattern classes use custom names
-        options.errorprone.check("BugPatternNaming", CheckSeverity.OFF)
+        options.errorprone.check("BugPatternNaming", CheckSeverity.ERROR)
     }
     withType<Javadoc> {
         dependsOn(createJavadocOptionFile)

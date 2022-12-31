@@ -13,37 +13,27 @@ import com.google.errorprone.BugPattern.LinkType;
 import com.google.errorprone.VisitorState;
 import com.google.errorprone.bugpatterns.BugChecker;
 import com.google.errorprone.bugpatterns.BugChecker.VariableTreeMatcher;
-import com.google.errorprone.fixes.SuggestedFix;
 import com.google.errorprone.fixes.SuggestedFixes;
 import com.google.errorprone.matchers.Description;
 import com.sun.source.tree.VariableTree;
 import javax.lang.model.element.Modifier;
 
 @BugPattern(
-    name = "Slf4jLoggerShouldBePrivate",
-    summary = "Do not publish Logger field, it should be private",
+    altNames = {"PreferFinalSlf4jLogger"},
+    summary = "Logger field should be final",
     tags = {"SLF4J"},
-    link = "https://github.com/KengoTODA/findbugs-slf4j#slf4j_logger_should_be_private",
+    link = "https://github.com/KengoTODA/findbugs-slf4j#slf4j_logger_should_be_final",
     linkType = LinkType.CUSTOM,
     severity = WARNING)
 @AutoService(BugChecker.class)
-public class DoNotPublishSlf4jLogger extends BugChecker implements VariableTreeMatcher {
-  private static final long serialVersionUID = 3718668951312958622L;
+public class Slf4jLoggerShouldBeFinal extends BugChecker implements VariableTreeMatcher {
+  private static final long serialVersionUID = -5127926153475887075L;
 
   @Override
   public Description matchVariable(VariableTree tree, VisitorState state) {
-    if (allOf(isField(), SLF4J_LOGGER, not(hasModifier(Modifier.PRIVATE))).matches(tree, state)) {
-      SuggestedFix.Builder builder = SuggestedFix.builder();
-      SuggestedFixes.addModifiers(tree, state, Modifier.PRIVATE).ifPresent(builder::merge);
-      SuggestedFixes.removeModifiers(tree, state, Modifier.PUBLIC, Modifier.PROTECTED)
-          .ifPresent(builder::merge);
-      return Description.builder(
-              tree,
-              "Slf4jLoggerShouldBePrivate",
-              "https://github.com/KengoTODA/findbugs-slf4j#slf4j_logger_should_be_private",
-              WARNING,
-              "Do not publish Logger field, it should be private")
-          .addFix(builder.build())
+    if (allOf(isField(), SLF4J_LOGGER, not(hasModifier(Modifier.FINAL))).matches(tree, state)) {
+      return buildDescription(tree)
+          .addFix(SuggestedFixes.addModifiers(tree, state, Modifier.FINAL))
           .build();
     }
     return Description.NO_MATCH;

@@ -16,7 +16,7 @@ dependencies {
     annotationProcessor("com.google.auto.service:auto-service:$autoServiceVersion")
     compileOnly("com.google.auto.service:auto-service:$autoServiceVersion")
     testImplementation("junit:junit:4.13.2")
-    testImplementation("org.slf4j:slf4j-api:2.0.0-alpha6")
+    testImplementation("org.slf4j:slf4j-api:2.0.6")
 }
 
 spotless {

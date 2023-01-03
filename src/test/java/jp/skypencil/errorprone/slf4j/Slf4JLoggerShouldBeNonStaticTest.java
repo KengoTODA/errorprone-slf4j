@@ -6,10 +6,10 @@ import com.google.errorprone.bugpatterns.BugChecker;
 import java.io.IOException;
 import org.junit.Test;
 
-public class DoNotUseStaticSlf4jLoggerTest {
+public class Slf4JLoggerShouldBeNonStaticTest {
   @Test
   public void testRefactoringStaticLogger() throws IOException {
-    BugChecker checker = new DoNotUseStaticSlf4jLogger();
+    BugChecker checker = new Slf4jLoggerShouldBeNonStatic();
     BugCheckerRefactoringTestHelper helper =
         BugCheckerRefactoringTestHelper.newInstance(checker, getClass());
     helper
@@ -35,7 +35,7 @@ public class DoNotUseStaticSlf4jLoggerTest {
 
   @Test
   public void testRefactoringWithAnnotation() throws IOException {
-    BugChecker checker = new DoNotUseStaticSlf4jLogger();
+    BugChecker checker = new Slf4jLoggerShouldBeNonStatic();
     BugCheckerRefactoringTestHelper helper =
         BugCheckerRefactoringTestHelper.newInstance(checker, getClass());
     helper

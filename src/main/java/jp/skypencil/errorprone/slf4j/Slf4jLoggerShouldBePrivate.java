@@ -13,33 +13,31 @@ import com.google.errorprone.BugPattern.LinkType;
 import com.google.errorprone.VisitorState;
 import com.google.errorprone.bugpatterns.BugChecker;
 import com.google.errorprone.bugpatterns.BugChecker.VariableTreeMatcher;
+import com.google.errorprone.fixes.SuggestedFix;
 import com.google.errorprone.fixes.SuggestedFixes;
 import com.google.errorprone.matchers.Description;
 import com.sun.source.tree.VariableTree;
 import javax.lang.model.element.Modifier;
 
 @BugPattern(
-    name = "Slf4jLoggerShouldBeFinal",
-    summary = "Logger field should be final",
+    altNames = {"DoNotPublishSlf4jLogger"},
+    summary = "Do not publish Logger field, it should be private",
     tags = {"SLF4J"},
-    link = "https://github.com/KengoTODA/findbugs-slf4j#slf4j_logger_should_be_final",
+    link = "https://github.com/KengoTODA/findbugs-slf4j#slf4j_logger_should_be_private",
     linkType = LinkType.CUSTOM,
     severity = WARNING)
 @AutoService(BugChecker.class)
-public class PreferFinalSlf4jLogger extends BugChecker implements VariableTreeMatcher {
-  private static final long serialVersionUID = -5127926153475887075L;
+public class Slf4jLoggerShouldBePrivate extends BugChecker implements VariableTreeMatcher {
+  private static final long serialVersionUID = 3718668951312958622L;
 
   @Override
   public Description matchVariable(VariableTree tree, VisitorState state) {
-    if (allOf(isField(), SLF4J_LOGGER, not(hasModifier(Modifier.FINAL))).matches(tree, state)) {
-      return Description.builder(
-              tree,
-              "Slf4jLoggerShouldBeFinal",
-              "https://github.com/KengoTODA/findbugs-slf4j#slf4j_logger_should_be_final",
-              WARNING,
-              "Logger field should be final")
-          .addFix(SuggestedFixes.addModifiers(tree, state, Modifier.FINAL))
-          .build();
+    if (allOf(isField(), SLF4J_LOGGER, not(hasModifier(Modifier.PRIVATE))).matches(tree, state)) {
+      SuggestedFix.Builder builder = SuggestedFix.builder();
+      SuggestedFixes.addModifiers(tree, state, Modifier.PRIVATE).ifPresent(builder::merge);
+      SuggestedFixes.removeModifiers(tree, state, Modifier.PUBLIC, Modifier.PROTECTED)
+          .ifPresent(builder::merge);
+      return buildDescription(tree).addFix(builder.build()).build();
     }
     return Description.NO_MATCH;
   }

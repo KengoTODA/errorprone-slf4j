@@ -4,30 +4,12 @@ import com.google.errorprone.CompilationTestHelper;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SignOnlyFormatTest {
+public class Slf4jFormatShouldBeConstTest {
   private CompilationTestHelper helper;
 
   @Before
   public void setup() {
-    helper = CompilationTestHelper.newInstance(SignOnlyFormat.class, getClass());
-  }
-
-  @Test
-  public void testPlaceholderOnly() {
-    helper
-        .addSourceLines(
-            "PlaceholderOnly.java",
-            "import org.slf4j.Logger;\n"
-                + "import org.slf4j.LoggerFactory;\n"
-                + "\n"
-                + "public class PlaceholderOnly {\n"
-                + "    private final Logger logger = LoggerFactory.getLogger(getClass());\n"
-                + "    void method() {\n"
-                + "        // BUG: Diagnostic contains: SLF4J logging format should contain non-sign text, but it is \'{}, {}\'\n"
-                + "        logger.info(\"{}, {}\", 1, 2);"
-                + "    }\n"
-                + "}")
-        .doTest();
+    helper = CompilationTestHelper.newInstance(Slf4jFormatShouldBeConst.class, getClass());
   }
 
   @Test
@@ -41,6 +23,7 @@ public class SignOnlyFormatTest {
                 + "public class NonConstantFormat {\n"
                 + "    private final Logger logger = LoggerFactory.getLogger(getClass());\n"
                 + "    void method() {\n"
+                + "        // BUG: Diagnostic contains: SLF4J logging format should be constant value, but it is \'this + \" is me\"\'\n"
                 + "        logger.info(this + \" is me\");"
                 + "    }\n"
                 + "}")
@@ -62,8 +45,8 @@ public class SignOnlyFormatTest {
                 + "    private final Marker marker = MarkerFactory.getMarker(\"Sample\");\n"
                 + "    void method() {\n"
                 + "        logger.info(marker, \"I have one placeholder, one parameter and one marker instance. {}\", 1);"
-                + "        // BUG: Diagnostic contains: SLF4J logging format should contain non-sign text, but it is \'{}: {}\'\n"
-                + "        logger.info(marker, \"{}: {}\", 1, 2);"
+                + "        // BUG: Diagnostic contains: SLF4J logging format should be constant value, but it is \'this + \" is me\"\'\n"
+                + "        logger.info(marker, this + \" is me\");"
                 + "    }\n"
                 + "}")
         .doTest();
@@ -78,14 +61,14 @@ public class SignOnlyFormatTest {
                 + "import org.slf4j.LoggerFactory;\n"
                 + "\n"
                 + "public class TernaryInStaticBlock {\n"
-                + "   public static boolean INDENT = true;\n"
-                + "   public static final boolean INDENT_FINAL = true;\n"
+                + "   public static boolean DEBUG = false;\n"
+                + "   public static final boolean DEBUG_FINAL = false;\n"
                 + "   private static final Logger logger = LoggerFactory.getLogger(TernaryInStaticBlock.class);\n"
                 + "\n"
                 + "   static {\n"
-                + "     logger.info((INDENT ? \"  \" : \"\") + \"{}\", 1);\n"
-                + "     // BUG: Diagnostic contains: SLF4J logging format should contain non-sign text, but it is '  {}'\n"
-                + "     logger.info((INDENT_FINAL ? \"  \" : \"\") + \"{}\", 1);\n"
+                + "     // BUG: Diagnostic contains: SLF4J logging format should be constant value, but it is '\"Debug mode \" + (DEBUG ? \"enabled.\" : \"disabled.\")'\n"
+                + "     logger.info(\"Debug mode \" + (DEBUG ? \"enabled.\" : \"disabled.\"));\n"
+                + "     logger.info(\"Debug mode \" + (DEBUG_FINAL ? \"enabled.\" : \"disabled.\"));\n"
                 + "   }\n"
                 + "}\n")
         .doTest();

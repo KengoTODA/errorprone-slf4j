@@ -6,10 +6,10 @@ import com.google.errorprone.bugpatterns.BugChecker;
 import java.io.IOException;
 import org.junit.Test;
 
-public class DoNotPublishSlf4jLoggerTest {
+public class Slf4JLoggerShouldBePrivateTest {
   @Test
   public void testRefactoringPublicLogger() throws IOException {
-    BugChecker checker = new DoNotPublishSlf4jLogger();
+    BugChecker checker = new Slf4jLoggerShouldBePrivate();
     BugCheckerRefactoringTestHelper helper =
         BugCheckerRefactoringTestHelper.newInstance(checker, getClass());
     helper
@@ -35,7 +35,7 @@ public class DoNotPublishSlf4jLoggerTest {
 
   @Test
   public void testRefactoringProtectedLogger() throws IOException {
-    BugChecker checker = new DoNotPublishSlf4jLogger();
+    BugChecker checker = new Slf4jLoggerShouldBePrivate();
     BugCheckerRefactoringTestHelper helper =
         BugCheckerRefactoringTestHelper.newInstance(checker, getClass());
     helper
@@ -61,7 +61,7 @@ public class DoNotPublishSlf4jLoggerTest {
 
   @Test
   public void testRefactoringPackagePrivateLogger() throws IOException {
-    BugChecker checker = new DoNotPublishSlf4jLogger();
+    BugChecker checker = new Slf4jLoggerShouldBePrivate();
     BugCheckerRefactoringTestHelper helper =
         BugCheckerRefactoringTestHelper.newInstance(checker, getClass());
     helper

@@ -15,14 +15,14 @@ import com.sun.source.tree.ExpressionTree;
 import com.sun.source.tree.MethodInvocationTree;
 
 @BugPattern(
-    name = "Slf4jFormatShouldBeConst",
+    altNames = {"FormatShouldBeConst"},
     summary = "Format of SLF4J logging should be constant value",
     tags = {"SLF4J"},
     link = "https://github.com/KengoTODA/findbugs-slf4j#slf4j_format_should_be_const",
     linkType = LinkType.CUSTOM,
     severity = ERROR)
 @AutoService(BugChecker.class)
-public class FormatShouldBeConst extends BugChecker implements MethodInvocationTreeMatcher {
+public class Slf4jFormatShouldBeConst extends BugChecker implements MethodInvocationTreeMatcher {
   private static final long serialVersionUID = 3271269614137732880L;
 
   @Override
@@ -43,12 +43,6 @@ public class FormatShouldBeConst extends BugChecker implements MethodInvocationT
         String.format(
             "SLF4J logging format should be constant value, but it is \'%s\'",
             state.getSourceForNode(expression));
-    return Description.builder(
-            tree,
-            "Slf4jFormatShouldBeConst",
-            "https://github.com/KengoTODA/findbugs-slf4j#slf4j_format_should_be_const",
-            ERROR,
-            message)
-        .build();
+    return buildDescription(tree).setMessage(message).build();
   }
 }

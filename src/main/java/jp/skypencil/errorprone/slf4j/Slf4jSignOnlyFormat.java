@@ -15,14 +15,14 @@ import com.sun.source.tree.ExpressionTree;
 import com.sun.source.tree.MethodInvocationTree;
 
 @BugPattern(
-    name = "Slf4jSignOnlyFormat",
+    altNames = {"SignOnlyFormat"},
     summary = "To make log readable, log format should contain not only sign but also texts",
     tags = {"SLF4J"},
     link = "https://github.com/KengoTODA/findbugs-slf4j#slf4j_sign_only_format",
     linkType = LinkType.CUSTOM,
     severity = ERROR)
 @AutoService(BugChecker.class)
-public class SignOnlyFormat extends BugChecker implements MethodInvocationTreeMatcher {
+public class Slf4jSignOnlyFormat extends BugChecker implements MethodInvocationTreeMatcher {
   private static final long serialVersionUID = 3271269614137732880L;
 
   @Override
@@ -45,13 +45,7 @@ public class SignOnlyFormat extends BugChecker implements MethodInvocationTreeMa
     String message =
         String.format(
             "SLF4J logging format should contain non-sign text, but it is \'%s\'", format);
-    return Description.builder(
-            tree,
-            "Slf4jSignOnlyFormat",
-            "https://github.com/KengoTODA/findbugs-slf4j#slf4j_sign_only_format",
-            ERROR,
-            message)
-        .build();
+    return buildDescription(tree).setMessage(message).build();
   }
 
   private static boolean verifyFormat(String formatString) {

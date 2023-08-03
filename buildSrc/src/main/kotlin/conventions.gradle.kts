@@ -6,7 +6,7 @@ plugins {
     id("org.sonarqube")
 }
 
-val autoServiceVersion = "1.0.1"
+val autoServiceVersion = "1.1.1"
 
 repositories {
     mavenCentral()

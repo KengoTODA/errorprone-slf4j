@@ -7,4 +7,4 @@ errorprone-core = { module = "com.google.errorprone:error_prone_core", version.r
 errorprone-test-helpers = { module = "com.google.errorprone:error_prone_test_helpers", version.ref = "errorprone" }
 
 [plugins]
-spotless = { id = "com.diffplug.spotless", version = "6.15.0" }
+spotless = { id = "com.diffplug.spotless", version = "6.20.0" }

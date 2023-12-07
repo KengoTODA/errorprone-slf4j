@@ -67,6 +67,8 @@ dependencies {
 
 If you want to disable some rules:
 ```kotlin
+import net.ltgt.gradle.errorprone.errorprone
+
 tasks.withType<JavaCompile>().configureEach {
     options.errorprone {
         disable("Slf4jLoggerShouldBeNonStatic")

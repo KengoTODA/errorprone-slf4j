@@ -19,32 +19,34 @@ dependencies {
     testImplementation(libs.errorprone.test.helpers)
 }
 
-val exportsArgs = listOf(
-    "--add-exports",
-    "jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED",
-    "--add-exports",
-    "jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED",
-    "--add-exports",
-    "jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED",
-    "--add-exports",
-    "jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED",
-    "--add-exports",
-    "jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED",
-    "--add-exports",
-    "jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED",
-    "--add-exports",
-    "jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED",
-    "--add-exports",
-    "jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED",
-)
+val exportsArgs =
+    listOf(
+        "--add-exports",
+        "jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED",
+        "--add-exports",
+        "jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED",
+        "--add-exports",
+        "jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED",
+        "--add-exports",
+        "jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED",
+        "--add-exports",
+        "jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED",
+        "--add-exports",
+        "jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED",
+        "--add-exports",
+        "jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED",
+        "--add-exports",
+        "jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED",
+    )
 
-val jacocoTestReport = tasks.jacocoTestReport {
-    dependsOn(tasks.test)
-    reports {
-        html.required.set(true)
-        xml.required.set(true)
+val jacocoTestReport =
+    tasks.jacocoTestReport {
+        dependsOn(tasks.test)
+        reports {
+            html.required.set(true)
+            xml.required.set(true)
+        }
     }
-}
 val addExportsFile = file("$buildDir/tmp/javadoc/add-exports.txt")
 val createJavadocOptionFile by tasks.registering {
     outputs.file(addExportsFile)

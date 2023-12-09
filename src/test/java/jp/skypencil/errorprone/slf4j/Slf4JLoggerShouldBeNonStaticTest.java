@@ -45,8 +45,6 @@ public class Slf4JLoggerShouldBeNonStaticTest {
                 + "import org.slf4j.LoggerFactory;\n"
                 + "\n"
                 + "public class StaticLogger {\n"
-                + "    @Deprecated"
-                + "    @SuppressWarnings(\"all\")"
                 + "    private static Logger LOGGER = LoggerFactory.getLogger(\"static\");\n"
                 + "}")
         .addOutputLines(
@@ -55,8 +53,6 @@ public class Slf4JLoggerShouldBeNonStaticTest {
                 + "import org.slf4j.LoggerFactory;\n"
                 + "\n"
                 + "public class StaticLogger {\n"
-                + "    @Deprecated"
-                + "    @SuppressWarnings(\"all\")"
                 + "    private Logger logger = LoggerFactory.getLogger(\"static\");\n"
                 + "}\n"
                 + "")

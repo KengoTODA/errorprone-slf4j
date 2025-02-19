@@ -9,7 +9,7 @@
     "url": "https://github.com/KengoTODA/errorprone-slf4j/issues"
   },
   "engines": {
-    "node": "^20.0.0"
+    "node": "^22.0.0"
   },
   "homepage": "https://github.com/KengoTODA/errorprone-slf4j#readme",
   "devDependencies": {

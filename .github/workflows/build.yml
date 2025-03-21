@@ -27,7 +27,7 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
       - name: Setup Gradle to generate and submit dependency graphs
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v3
         with:
           dependency-graph: generate-and-submit
       - run: |

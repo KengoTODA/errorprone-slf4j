@@ -23,6 +23,8 @@ Current version supports following bug patterns:
 
 ## Install
 
+**Requirements:** Java 17 or higher (recommended: Java 21)
+
 After [installation of Error Prone](https://errorprone.info/docs/installation), introduce errorprone-slf4j as plugin. Refer [official document](https://errorprone.info/docs/plugins#build-system-support) or following examples:
 
 ### Maven

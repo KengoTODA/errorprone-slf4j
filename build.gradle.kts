@@ -64,8 +64,8 @@ val signingPassword: String? by project
 
 tasks {
     withType<JavaCompile> {
-        sourceCompatibility = "11"
-        targetCompatibility = "11"
+        sourceCompatibility = "17"
+        targetCompatibility = "17"
         options.compilerArgs.addAll(exportsArgs)
         options.errorprone.disableWarningsInGeneratedCode.set(true)
 
@@ -101,7 +101,7 @@ tasks {
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(11))
+        languageVersion.set(JavaLanguageVersion.of(17))
     }
     withSourcesJar()
     withJavadocJar()

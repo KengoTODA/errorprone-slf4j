@@ -13,9 +13,9 @@
   },
   "homepage": "https://github.com/KengoTODA/errorprone-slf4j#readme",
   "devDependencies": {
-    "@semantic-release/github": "^9.0.0",
+    "@semantic-release/github": "^11.0.0",
     "gradle-semantic-release-plugin": "^1.8.0",
-    "semantic-release": "^22.0.0"
+    "semantic-release": "^24.0.0"
   },
   "release": {
     "branches": [

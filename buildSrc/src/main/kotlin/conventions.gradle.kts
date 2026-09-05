@@ -3,7 +3,6 @@ plugins {
     id("com.diffplug.spotless")
     id("io.github.gradle-nexus.publish-plugin")
     id("net.ltgt.errorprone")
-    id("org.sonarqube")
 }
 
 val autoServiceVersion = "1.1.1"
@@ -28,13 +27,5 @@ spotless {
         target("build.gradle.kts")
         ktlint()
         indentWithSpaces()
-    }
-}
-
-sonar {
-    properties {
-        property("sonar.host.url", "https://sonarcloud.io")
-        property("sonar.projectKey", "jp.skypencil.errorprone.slf4j:errorprone-slf4j")
-        property("sonar.organization", "kengotoda-github")
     }
 }

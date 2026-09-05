@@ -1,6 +1,5 @@
 import net.ltgt.gradle.errorprone.CheckSeverity
 import net.ltgt.gradle.errorprone.errorprone
-import org.sonarqube.gradle.SonarTask
 
 plugins {
     `jacoco`
@@ -86,9 +85,6 @@ tasks {
         onlyIf {
             signingKey.isNullOrEmpty().not() && signingPassword.isNullOrEmpty().not()
         }
-    }
-    withType<SonarTask> {
-        dependsOn(jacocoTestReport)
     }
     check {
         dependsOn(jacocoTestReport)

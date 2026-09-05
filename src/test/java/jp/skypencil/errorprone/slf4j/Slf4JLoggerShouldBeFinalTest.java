@@ -15,21 +15,24 @@ public class Slf4JLoggerShouldBeFinalTest {
     helper
         .addInputLines(
             "NonFinalLogger.java",
-            "import org.slf4j.Logger;\n"
-                + "import org.slf4j.LoggerFactory;\n"
-                + "\n"
-                + "public class NonFinalLogger {\n"
-                + "    private Logger logger = LoggerFactory.getLogger(getClass());\n"
-                + "}")
+            """
+            import org.slf4j.Logger;
+            import org.slf4j.LoggerFactory;
+
+            public class NonFinalLogger {
+              private Logger logger = LoggerFactory.getLogger(getClass());
+            }
+            """)
         .addOutputLines(
             "NonFinalLogger.java",
-            "import org.slf4j.Logger;\n"
-                + "import org.slf4j.LoggerFactory;\n"
-                + "\n"
-                + "public class NonFinalLogger {\n"
-                + "    private final Logger logger = LoggerFactory.getLogger(getClass());\n"
-                + "}\n"
-                + "")
+            """
+            import org.slf4j.Logger;
+            import org.slf4j.LoggerFactory;
+
+            public class NonFinalLogger {
+              private final Logger logger = LoggerFactory.getLogger(getClass());
+            }
+            """)
         .doTest(TestMode.TEXT_MATCH);
   }
 }

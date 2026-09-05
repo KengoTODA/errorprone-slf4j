@@ -27,21 +27,24 @@ public class Slf4jIllegalPassedClassTest {
     helper
         .addInputLines(
             "PrivateLogger.java",
-            "import org.slf4j.Logger;\n"
-                + "import org.slf4j.LoggerFactory;\n"
-                + "\n"
-                + "public class PrivateLogger {\n"
-                + "    private final Logger logger = LoggerFactory.getLogger(String.class);\n"
-                + "}")
+            """
+            import org.slf4j.Logger;
+            import org.slf4j.LoggerFactory;
+
+            public class PrivateLogger {
+              private final Logger logger = LoggerFactory.getLogger(String.class);
+            }
+            """)
         .addOutputLines(
             "PrivateLogger.java",
-            "import org.slf4j.Logger;\n"
-                + "import org.slf4j.LoggerFactory;\n"
-                + "\n"
-                + "public class PrivateLogger {\n"
-                + "    private final Logger logger = LoggerFactory.getLogger(getClass());\n"
-                + "}\n"
-                + "")
+            """
+            import org.slf4j.Logger;
+            import org.slf4j.LoggerFactory;
+
+            public class PrivateLogger {
+              private final Logger logger = LoggerFactory.getLogger(getClass());
+            }
+            """)
         .doTest(TestMode.TEXT_MATCH);
   }
 
@@ -53,21 +56,24 @@ public class Slf4jIllegalPassedClassTest {
     helper
         .addInputLines(
             "PrivateLogger.java",
-            "import org.slf4j.Logger;\n"
-                + "import org.slf4j.LoggerFactory;\n"
-                + "\n"
-                + "public class PrivateLogger {\n"
-                + "    private static final Logger LOGGER = LoggerFactory.getLogger(String.class);\n"
-                + "}")
+            """
+            import org.slf4j.Logger;
+            import org.slf4j.LoggerFactory;
+
+            public class PrivateLogger {
+              private static final Logger LOGGER = LoggerFactory.getLogger(String.class);
+            }
+            """)
         .addOutputLines(
             "PrivateLogger.java",
-            "import org.slf4j.Logger;\n"
-                + "import org.slf4j.LoggerFactory;\n"
-                + "\n"
-                + "public class PrivateLogger {\n"
-                + "    private static final Logger LOGGER = LoggerFactory.getLogger(PrivateLogger.class);\n"
-                + "}\n"
-                + "")
+            """
+            import org.slf4j.Logger;
+            import org.slf4j.LoggerFactory;
+
+            public class PrivateLogger {
+              private static final Logger LOGGER = LoggerFactory.getLogger(PrivateLogger.class);
+            }
+            """)
         .doTest(TestMode.TEXT_MATCH);
   }
 
@@ -80,21 +86,24 @@ public class Slf4jIllegalPassedClassTest {
     helper
         .addInputLines(
             "PrivateLogger.java",
-            "import org.slf4j.Logger;\n"
-                + "import org.slf4j.LoggerFactory;\n"
-                + "\n"
-                + "public class PrivateLogger {\n"
-                + "    private final Logger logger = LoggerFactory.getLogger(String.class);\n"
-                + "}")
+            """
+            import org.slf4j.Logger;
+            import org.slf4j.LoggerFactory;
+
+            public class PrivateLogger {
+              private final Logger logger = LoggerFactory.getLogger(String.class);
+            }
+            """)
         .addOutputLines(
             "PrivateLogger.java",
-            "import org.slf4j.Logger;\n"
-                + "import org.slf4j.LoggerFactory;\n"
-                + "\n"
-                + "public class PrivateLogger {\n"
-                + "    private final Logger logger = LoggerFactory.getLogger(PrivateLogger.class);\n"
-                + "}\n"
-                + "")
+            """
+            import org.slf4j.Logger;
+            import org.slf4j.LoggerFactory;
+
+            public class PrivateLogger {
+              private final Logger logger = LoggerFactory.getLogger(PrivateLogger.class);
+            }
+            """)
         .doTest(TestMode.TEXT_MATCH);
   }
 
@@ -107,25 +116,28 @@ public class Slf4jIllegalPassedClassTest {
     helper
         .addInputLines(
             "PrivateLogger.java",
-            "import org.slf4j.Logger;\n"
-                + "import org.slf4j.LoggerFactory;\n"
-                + "\n"
-                + "public class PrivateLogger {\n"
-                + "    private static class InnerClass {\n"
-                + "        private static final Logger LOGGER = LoggerFactory.getLogger(String.class);\n"
-                + "    }\n"
-                + "}")
+            """
+            import org.slf4j.Logger;
+            import org.slf4j.LoggerFactory;
+
+            public class PrivateLogger {
+              private static class InnerClass {
+                private static final Logger LOGGER = LoggerFactory.getLogger(String.class);
+              }
+            }
+            """)
         .addOutputLines(
             "PrivateLogger.java",
-            "import org.slf4j.Logger;\n"
-                + "import org.slf4j.LoggerFactory;\n"
-                + "\n"
-                + "public class PrivateLogger {\n"
-                + "    private static class InnerClass {\n"
-                + "        private static final Logger LOGGER = LoggerFactory.getLogger(PrivateLogger.class);\n"
-                + "    }\n"
-                + "}\n"
-                + "")
+            """
+            import org.slf4j.Logger;
+            import org.slf4j.LoggerFactory;
+
+            public class PrivateLogger {
+              private static class InnerClass {
+                private static final Logger LOGGER = LoggerFactory.getLogger(PrivateLogger.class);
+              }
+            }
+            """)
         .doTest(TestMode.TEXT_MATCH);
   }
 
@@ -138,25 +150,28 @@ public class Slf4jIllegalPassedClassTest {
     helper
         .addInputLines(
             "PrivateLogger.java",
-            "import org.slf4j.Logger;\n"
-                + "import org.slf4j.LoggerFactory;\n"
-                + "\n"
-                + "public class PrivateLogger {\n"
-                + "    private static class InnerClass {\n"
-                + "        private static final Logger LOGGER = LoggerFactory.getLogger(String.class);\n"
-                + "    }\n"
-                + "}")
+            """
+            import org.slf4j.Logger;
+            import org.slf4j.LoggerFactory;
+
+            public class PrivateLogger {
+              private static class InnerClass {
+                private static final Logger LOGGER = LoggerFactory.getLogger(String.class);
+              }
+            }
+            """)
         .addOutputLines(
             "PrivateLogger.java",
-            "import org.slf4j.Logger;\n"
-                + "import org.slf4j.LoggerFactory;\n"
-                + "\n"
-                + "public class PrivateLogger {\n"
-                + "    private static class InnerClass {\n"
-                + "        private static final Logger LOGGER = LoggerFactory.getLogger(InnerClass.class);\n"
-                + "    }\n"
-                + "}\n"
-                + "")
+            """
+            import org.slf4j.Logger;
+            import org.slf4j.LoggerFactory;
+
+            public class PrivateLogger {
+              private static class InnerClass {
+                private static final Logger LOGGER = LoggerFactory.getLogger(InnerClass.class);
+              }
+            }
+            """)
         .doTest(TestMode.TEXT_MATCH);
   }
 
@@ -167,15 +182,17 @@ public class Slf4jIllegalPassedClassTest {
     helper
         .addSourceLines(
             "WithLoggerFactory.java",
-            "import org.slf4j.Logger;\n"
-                + "import org.slf4j.ILoggerFactory;\n"
-                + "import org.slf4j.LoggerFactory;\n"
-                + "\n"
-                + "public class WithLoggerFactory {\n"
-                + "    private final String HELLO = \"World\";"
-                + "    private final ILoggerFactory loggerFactory = LoggerFactory.getILoggerFactory();\n"
-                + "    private final Logger logger = LoggerFactory.getLogger(\"string\");\n"
-                + "}")
+            """
+            import org.slf4j.Logger;
+            import org.slf4j.ILoggerFactory;
+            import org.slf4j.LoggerFactory;
+
+            public class WithLoggerFactory {
+              private final String HELLO = "World";
+              private final ILoggerFactory loggerFactory = LoggerFactory.getILoggerFactory();
+              private final Logger logger = LoggerFactory.getLogger("string");
+            }
+            """)
         .expectNoDiagnostics()
         .doTest();
   }
@@ -187,12 +204,14 @@ public class Slf4jIllegalPassedClassTest {
     helper
         .addSourceLines(
             "PrivateLogger.java",
-            "import org.slf4j.Logger;\n"
-                + "import org.slf4j.LoggerFactory;\n"
-                + "\n"
-                + "public class PrivateLogger {\n"
-                + "    private final Logger logger = LoggerFactory.getLogger(PrivateLogger.class);\n"
-                + "}")
+            """
+            import org.slf4j.Logger;
+            import org.slf4j.LoggerFactory;
+
+            public class PrivateLogger {
+              private final Logger logger = LoggerFactory.getLogger(PrivateLogger.class);
+            }
+            """)
         .expectNoDiagnostics()
         .doTest();
   }
@@ -204,15 +223,17 @@ public class Slf4jIllegalPassedClassTest {
     helper
         .addSourceLines(
             "PrivateLogger.java",
-            "import org.slf4j.Logger;\n"
-                + "import org.slf4j.LoggerFactory;\n"
-                + "\n"
-                + "public class PrivateLogger {\n"
-                + "    private static class InnerClass {\n"
-                + "        private static final Logger LOGGER = LoggerFactory.getLogger(InnerClass.class);\n"
-                + "        private final Logger logger = LoggerFactory.getLogger(PrivateLogger.class);\n"
-                + "    }\n"
-                + "}")
+            """
+            import org.slf4j.Logger;
+            import org.slf4j.LoggerFactory;
+
+            public class PrivateLogger {
+              private static class InnerClass {
+                private static final Logger LOGGER = LoggerFactory.getLogger(InnerClass.class);
+                private final Logger logger = LoggerFactory.getLogger(PrivateLogger.class);
+              }
+            }
+            """)
         .expectNoDiagnostics()
         .doTest();
   }
@@ -224,13 +245,14 @@ public class Slf4jIllegalPassedClassTest {
     helper
         .addSourceLines(
             "PrivateLogger.java",
-            "import org.slf4j.Logger;\n"
-                + "import org.slf4j.LoggerFactory;\n"
-                + "\n"
-                + "public class PrivateLogger {\n"
-                + "    private void method (String string) {\n"
-                + "    }\n"
-                + "}")
+            """
+            import org.slf4j.Logger;
+            import org.slf4j.LoggerFactory;
+
+            public class PrivateLogger {
+              private void method(String string) {}
+            }
+            """)
         .expectNoDiagnostics()
         .doTest();
   }

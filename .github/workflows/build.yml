@@ -4,11 +4,9 @@ on:
   pull_request:
 
 permissions:
-  checks: write # for SonarQube
   contents: write # for semantic-release/github
   issues: write # fir semantic-release/github
-  statuses: read # for SonarQube
-  pull-requests: write # for SonarQube and semantic-release/github
+  pull-requests: write # for semantic-release/github
 
 jobs:
   build:
@@ -31,12 +29,11 @@ jobs:
           validate-wrappers: true
           dependency-graph: generate-and-submit
       - run: |
-          ./gradlew build ${SONAR_TOKEN:+sonar}
+          ./gradlew build
           rm build/libs/*.jar
           npm ci
           npx semantic-release
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ORG_GRADLE_PROJECT_sonatypeUsername: ${{ secrets.SONATYPE_USERNAME }}
           ORG_GRADLE_PROJECT_sonatypePassword: ${{ secrets.SONATYPE_PASSWORD }}

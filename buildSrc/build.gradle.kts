@@ -13,6 +13,12 @@ dependencies {
     implementation("io.github.gradle-nexus:publish-plugin:2.0.0")
     implementation("net.ltgt.gradle:gradle-errorprone-plugin:4.4.0")
     implementation("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:6.3.1.5724")
+
+    constraints {
+        implementation("org.bouncycastle:bcprov-jdk18on:1.84") {
+            because("Fix CVE-2025-14813 in the transitive SonarScanner dependency")
+        }
+    }
 }
 
 spotless {

@@ -13,19 +13,24 @@ public class Slf4jDoNotLogMessageOfExceptionExplicitlyTest {
     helper
         .addSourceLines(
             "WithManualMessage.java",
-            "import org.slf4j.Logger;\n"
-                + "import org.slf4j.LoggerFactory;\n"
-                + "\n"
-                + "public class WithManualMessage {\n"
-                + "    private Logger logger = LoggerFactory.getLogger(WithManualMessage.class);\n"
-                + "    void method(Exception e) {\n"
-                + "        logger.info(\"Exception given\", e);\n"
-                + "        // BUG: Diagnostic contains: Do not log message returned from Throwable#getMessage and Throwable#getLocalizedMessage\n"
-                + "        logger.info(\"Message of given exception: {}\", e.getMessage());\n"
-                + "        // BUG: Diagnostic contains: Do not log message returned from Throwable#getMessage and Throwable#getLocalizedMessage\n"
-                + "        logger.info(\"Message of given exception: {}\", e.getLocalizedMessage());\n"
-                + "    }\n"
-                + "}")
+            """
+            import org.slf4j.Logger;
+            import org.slf4j.LoggerFactory;
+
+            public class WithManualMessage {
+              private Logger logger = LoggerFactory.getLogger(WithManualMessage.class);
+
+              void method(Exception e) {
+                logger.info("Exception given", e);
+                // BUG: Diagnostic contains: Do not log message returned from Throwable#getMessage and
+                // Throwable#getLocalizedMessage
+                logger.info("Message of given exception: {}", e.getMessage());
+                // BUG: Diagnostic contains: Do not log message returned from Throwable#getMessage and
+                // Throwable#getLocalizedMessage
+                logger.info("Message of given exception: {}", e.getLocalizedMessage());
+              }
+            }
+            """)
         .doTest();
   }
 }

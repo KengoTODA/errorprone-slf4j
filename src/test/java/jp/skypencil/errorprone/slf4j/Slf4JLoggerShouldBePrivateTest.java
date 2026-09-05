@@ -15,21 +15,24 @@ public class Slf4JLoggerShouldBePrivateTest {
     helper
         .addInputLines(
             "PublicLogger.java",
-            "import org.slf4j.Logger;\n"
-                + "import org.slf4j.LoggerFactory;\n"
-                + "\n"
-                + "public class PublicLogger {\n"
-                + "    public Logger logger = LoggerFactory.getLogger(PublicLogger.class);\n"
-                + "}")
+            """
+            import org.slf4j.Logger;
+            import org.slf4j.LoggerFactory;
+
+            public class PublicLogger {
+              public Logger logger = LoggerFactory.getLogger(PublicLogger.class);
+            }
+            """)
         .addOutputLines(
             "PublicLogger.java",
-            "import org.slf4j.Logger;\n"
-                + "import org.slf4j.LoggerFactory;\n"
-                + "\n"
-                + "public class PublicLogger {\n"
-                + "    private Logger logger = LoggerFactory.getLogger(PublicLogger.class);\n"
-                + "}\n"
-                + "")
+            """
+            import org.slf4j.Logger;
+            import org.slf4j.LoggerFactory;
+
+            public class PublicLogger {
+              private Logger logger = LoggerFactory.getLogger(PublicLogger.class);
+            }
+            """)
         .doTest(TestMode.TEXT_MATCH);
   }
 
@@ -41,21 +44,24 @@ public class Slf4JLoggerShouldBePrivateTest {
     helper
         .addInputLines(
             "ProtectedLogger.java",
-            "import org.slf4j.Logger;\n"
-                + "import org.slf4j.LoggerFactory;\n"
-                + "\n"
-                + "public class ProtectedLogger {\n"
-                + "    protected Logger logger = LoggerFactory.getLogger(getClass());\n"
-                + "}")
+            """
+            import org.slf4j.Logger;
+            import org.slf4j.LoggerFactory;
+
+            public class ProtectedLogger {
+              protected Logger logger = LoggerFactory.getLogger(getClass());
+            }
+            """)
         .addOutputLines(
             "ProtectedLogger.java",
-            "import org.slf4j.Logger;\n"
-                + "import org.slf4j.LoggerFactory;\n"
-                + "\n"
-                + "public class ProtectedLogger {\n"
-                + "    private Logger logger = LoggerFactory.getLogger(getClass());\n"
-                + "}\n"
-                + "")
+            """
+            import org.slf4j.Logger;
+            import org.slf4j.LoggerFactory;
+
+            public class ProtectedLogger {
+              private Logger logger = LoggerFactory.getLogger(getClass());
+            }
+            """)
         .doTest(TestMode.TEXT_MATCH);
   }
 
@@ -67,21 +73,24 @@ public class Slf4JLoggerShouldBePrivateTest {
     helper
         .addInputLines(
             "PackagePrivateLogger.java",
-            "import org.slf4j.Logger;\n"
-                + "import org.slf4j.LoggerFactory;\n"
-                + "\n"
-                + "public class PackagePrivateLogger {\n"
-                + "    Logger logger = LoggerFactory.getLogger(getClass());\n"
-                + "}")
+            """
+            import org.slf4j.Logger;
+            import org.slf4j.LoggerFactory;
+
+            public class PackagePrivateLogger {
+              Logger logger = LoggerFactory.getLogger(getClass());
+            }
+            """)
         .addOutputLines(
             "PackagePrivateLogger.java",
-            "import org.slf4j.Logger;\n"
-                + "import org.slf4j.LoggerFactory;\n"
-                + "\n"
-                + "public class PackagePrivateLogger {\n"
-                + "    private Logger logger = LoggerFactory.getLogger(getClass());\n"
-                + "}\n"
-                + "")
+            """
+            import org.slf4j.Logger;
+            import org.slf4j.LoggerFactory;
+
+            public class PackagePrivateLogger {
+              private Logger logger = LoggerFactory.getLogger(getClass());
+            }
+            """)
         .doTest(TestMode.TEXT_MATCH);
   }
 }

@@ -17,16 +17,19 @@ public class Slf4jFormatShouldBeConstTest {
     helper
         .addSourceLines(
             "NonConstantFormat.java",
-            "import org.slf4j.Logger;\n"
-                + "import org.slf4j.LoggerFactory;\n"
-                + "\n"
-                + "public class NonConstantFormat {\n"
-                + "    private final Logger logger = LoggerFactory.getLogger(getClass());\n"
-                + "    void method() {\n"
-                + "        // BUG: Diagnostic contains: SLF4J logging format should be constant value, but it is \'this + \" is me\"\'\n"
-                + "        logger.info(this + \" is me\");"
-                + "    }\n"
-                + "}")
+            """
+            import org.slf4j.Logger;
+            import org.slf4j.LoggerFactory;
+
+            public class NonConstantFormat {
+              private final Logger logger = LoggerFactory.getLogger(getClass());
+
+              void method() {
+                // BUG: Diagnostic contains: constant value, but it is 'this + " is me"'
+                logger.info(this + " is me");
+              }
+            }
+            """)
         .doTest();
   }
 
@@ -35,20 +38,24 @@ public class Slf4jFormatShouldBeConstTest {
     helper
         .addSourceLines(
             "WithMarker.java",
-            "import org.slf4j.Logger;\n"
-                + "import org.slf4j.LoggerFactory;\n"
-                + "import org.slf4j.MarkerFactory;\n"
-                + "import org.slf4j.Marker;\n"
-                + "\n"
-                + "public class WithMarker {\n"
-                + "    private final Logger logger = LoggerFactory.getLogger(getClass());\n"
-                + "    private final Marker marker = MarkerFactory.getMarker(\"Sample\");\n"
-                + "    void method() {\n"
-                + "        logger.info(marker, \"I have one placeholder, one parameter and one marker instance. {}\", 1);"
-                + "        // BUG: Diagnostic contains: SLF4J logging format should be constant value, but it is \'this + \" is me\"\'\n"
-                + "        logger.info(marker, this + \" is me\");"
-                + "    }\n"
-                + "}")
+            """
+            import org.slf4j.Logger;
+            import org.slf4j.LoggerFactory;
+            import org.slf4j.MarkerFactory;
+            import org.slf4j.Marker;
+
+            public class WithMarker {
+              private final Logger logger = LoggerFactory.getLogger(getClass());
+              private final Marker marker = MarkerFactory.getMarker("Sample");
+
+              void method() {
+                logger.info(marker, "I have one placeholder, one parameter and one marker instance. {}", 1);
+                // BUG: Diagnostic contains: SLF4J logging format should be constant value, but it is 'this + "
+                // is me"'
+                logger.info(marker, this + " is me");
+              }
+            }
+            """)
         .doTest();
   }
 
@@ -57,20 +64,23 @@ public class Slf4jFormatShouldBeConstTest {
     helper
         .addSourceLines(
             "TernaryInStaticBlock.java",
-            "import org.slf4j.Logger;\n"
-                + "import org.slf4j.LoggerFactory;\n"
-                + "\n"
-                + "public class TernaryInStaticBlock {\n"
-                + "   public static boolean DEBUG = false;\n"
-                + "   public static final boolean DEBUG_FINAL = false;\n"
-                + "   private static final Logger logger = LoggerFactory.getLogger(TernaryInStaticBlock.class);\n"
-                + "\n"
-                + "   static {\n"
-                + "     // BUG: Diagnostic contains: SLF4J logging format should be constant value, but it is '\"Debug mode \" + (DEBUG ? \"enabled.\" : \"disabled.\")'\n"
-                + "     logger.info(\"Debug mode \" + (DEBUG ? \"enabled.\" : \"disabled.\"));\n"
-                + "     logger.info(\"Debug mode \" + (DEBUG_FINAL ? \"enabled.\" : \"disabled.\"));\n"
-                + "   }\n"
-                + "}\n")
+            """
+            import org.slf4j.Logger;
+            import org.slf4j.LoggerFactory;
+
+            public class TernaryInStaticBlock {
+              public static boolean DEBUG = false;
+              public static final boolean DEBUG_FINAL = false;
+              private static final Logger logger = LoggerFactory.getLogger(TernaryInStaticBlock.class);
+
+              static {
+                // BUG: Diagnostic contains: SLF4J logging format should be constant value, but it is '"Debug
+                // mode " + (DEBUG ? "enabled." : "disabled.")'
+                logger.info("Debug mode " + (DEBUG ? "enabled." : "disabled."));
+                logger.info("Debug mode " + (DEBUG_FINAL ? "enabled." : "disabled."));
+              }
+            }
+            """)
         .doTest();
   }
 }

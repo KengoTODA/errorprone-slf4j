@@ -15,21 +15,24 @@ public class Slf4JLoggerShouldBeNonStaticTest {
     helper
         .addInputLines(
             "StaticLogger.java",
-            "import org.slf4j.Logger;\n"
-                + "import org.slf4j.LoggerFactory;\n"
-                + "\n"
-                + "public class StaticLogger {\n"
-                + "    private static Logger LOGGER = LoggerFactory.getLogger(\"static\");\n"
-                + "}")
+            """
+            import org.slf4j.Logger;
+            import org.slf4j.LoggerFactory;
+
+            public class StaticLogger {
+              private static Logger LOGGER = LoggerFactory.getLogger("static");
+            }
+            """)
         .addOutputLines(
             "StaticLogger.java",
-            "import org.slf4j.Logger;\n"
-                + "import org.slf4j.LoggerFactory;\n"
-                + "\n"
-                + "public class StaticLogger {\n"
-                + "    private Logger logger = LoggerFactory.getLogger(\"static\");\n"
-                + "}\n"
-                + "")
+            """
+            import org.slf4j.Logger;
+            import org.slf4j.LoggerFactory;
+
+            public class StaticLogger {
+              private Logger logger = LoggerFactory.getLogger("static");
+            }
+            """)
         .doTest(TestMode.TEXT_MATCH);
   }
 
@@ -41,21 +44,24 @@ public class Slf4JLoggerShouldBeNonStaticTest {
     helper
         .addInputLines(
             "StaticLogger.java",
-            "import org.slf4j.Logger;\n"
-                + "import org.slf4j.LoggerFactory;\n"
-                + "\n"
-                + "public class StaticLogger {\n"
-                + "    private static Logger LOGGER = LoggerFactory.getLogger(\"static\");\n"
-                + "}")
+            """
+            import org.slf4j.Logger;
+            import org.slf4j.LoggerFactory;
+
+            public class StaticLogger {
+              private static Logger LOGGER = LoggerFactory.getLogger("static");
+            }
+            """)
         .addOutputLines(
             "StaticLogger.java",
-            "import org.slf4j.Logger;\n"
-                + "import org.slf4j.LoggerFactory;\n"
-                + "\n"
-                + "public class StaticLogger {\n"
-                + "    private Logger logger = LoggerFactory.getLogger(\"static\");\n"
-                + "}\n"
-                + "")
+            """
+            import org.slf4j.Logger;
+            import org.slf4j.LoggerFactory;
+
+            public class StaticLogger {
+              private Logger logger = LoggerFactory.getLogger("static");
+            }
+            """)
         .doTest(TestMode.TEXT_MATCH);
   }
 }
